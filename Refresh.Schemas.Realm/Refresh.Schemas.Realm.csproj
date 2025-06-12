@@ -9,5 +9,9 @@
     <ItemGroup>
       <ProjectReference Include="..\Refresh.Common\Refresh.Common.csproj" />
     </ItemGroup>
+    
+    <ItemGroup>
+        <PackageReference Include="Realm" Version="20.1.0" />
+    </ItemGroup>
 
 </Project>
