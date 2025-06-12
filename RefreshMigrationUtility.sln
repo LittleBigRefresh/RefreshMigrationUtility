@@ -12,6 +12,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Schemas", "Schemas", "{C84F
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Refresh.Schema.Postgres.Impl", "Refresh.Schema.Postgres.Impl\Refresh.Schema.Postgres.Impl.csproj", "{AEF5D937-0223-47CC-9A5D-FEA7541E443B}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Refresh.Schema.Realm.Impl", "Refresh.Schema.Realm.Impl\Refresh.Schema.Realm.Impl.csproj", "{68A6F198-AD19-46FF-9B9F-0E41214ECC69}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -38,10 +40,15 @@ Global
 		{AEF5D937-0223-47CC-9A5D-FEA7541E443B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AEF5D937-0223-47CC-9A5D-FEA7541E443B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AEF5D937-0223-47CC-9A5D-FEA7541E443B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{68A6F198-AD19-46FF-9B9F-0E41214ECC69}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{68A6F198-AD19-46FF-9B9F-0E41214ECC69}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{68A6F198-AD19-46FF-9B9F-0E41214ECC69}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{68A6F198-AD19-46FF-9B9F-0E41214ECC69}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{4DF3B7E9-CC11-464E-ACEE-19003E1800D3} = {C84FA141-0AE7-4866-9D06-A910D251345F}
 		{7546CE5A-198E-4B1E-B29D-E7E93A694C87} = {C84FA141-0AE7-4866-9D06-A910D251345F}
 		{AEF5D937-0223-47CC-9A5D-FEA7541E443B} = {C84FA141-0AE7-4866-9D06-A910D251345F}
+		{68A6F198-AD19-46FF-9B9F-0E41214ECC69} = {C84FA141-0AE7-4866-9D06-A910D251345F}
 	EndGlobalSection
 EndGlobal

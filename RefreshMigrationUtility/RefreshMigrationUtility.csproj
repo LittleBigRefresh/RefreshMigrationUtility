@@ -10,6 +10,7 @@
     <ItemGroup>
       <ProjectReference Include="..\Refresh.Common\Refresh.Common.csproj" />
       <ProjectReference Include="..\Refresh.Schema.Postgres.Impl\Refresh.Schema.Postgres.Impl.csproj" />
+      <ProjectReference Include="..\Refresh.Schema.Realm.Impl\Refresh.Schema.Realm.Impl.csproj" />
       <ProjectReference Include="..\Refresh.Schemas.Postgres\Refresh.Schemas.Postgres.csproj" />
       <ProjectReference Include="..\Refresh.Schemas.Realm\Refresh.Schemas.Realm.csproj" />
     </ItemGroup>
