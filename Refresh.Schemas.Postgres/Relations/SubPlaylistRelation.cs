@@ -7,9 +7,7 @@ namespace Refresh.Database.Models.Relations;
 /// <summary>
 /// A mapping of playlist -> sub-playlist
 /// </summary>
-#if POSTGRES
 [PrimaryKey(nameof(PlaylistId), nameof(SubPlaylistId))]
-#endif
 public partial class SubPlaylistRelation
 {
     /// <summary>

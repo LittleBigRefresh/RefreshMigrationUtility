@@ -6,9 +6,7 @@ namespace Refresh.Database.Models.Relations;
 
 #nullable disable
 
-#if POSTGRES
 [PrimaryKey(nameof(PinId), nameof(PublisherId))]
-#endif
 public partial class ProfilePinRelation
 {
     public long PinId { get; set; }

@@ -6,9 +6,7 @@ namespace Refresh.Database.Models.Relations;
 
 #nullable disable
 
-#if POSTGRES
 [PrimaryKey(nameof(ReviewId), nameof(UserId))]
-#endif
 public partial class RateReviewRelation
 {
     [ForeignKey(nameof(ReviewId))]

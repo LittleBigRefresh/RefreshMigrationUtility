@@ -66,28 +66,7 @@ public partial class GameContest
     
     [CanBeNull] public string ContestTheme { get; set; }
     
-#if !POSTGRES
-    /// <summary>
-    /// A list of games that are allowed in the contest
-    /// </summary>
-    // ReSharper disable once InconsistentNaming
-    // ReSharper disable once UnassignedGetOnlyAutoProperty
-    public IList<int> _AllowedGames { get; }
-
-    public IEnumerable<TokenGame> AllowedGames
-    {
-        get => this._AllowedGames.Select(g => (TokenGame)g);
-        set
-        {
-            this._AllowedGames.Clear();
-            foreach (TokenGame game in value)
-            {
-                this._AllowedGames.Add((int)game);
-            }
-        }
-    }
-#else
     public IList<TokenGame> AllowedGames { get; set; } = [];
-#endif
+
     [CanBeNull] public GameLevel TemplateLevel { get; set; }
 }

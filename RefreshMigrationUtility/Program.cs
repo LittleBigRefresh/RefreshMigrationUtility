@@ -1,3 +1,5 @@
-﻿// See https://aka.ms/new-console-template for more information
+﻿using Microsoft.EntityFrameworkCore;
+using Refresh.Database;
 
-Console.WriteLine("Hello, World!");
+GameDatabaseContext postgres = new();
+postgres.Database.Migrate();

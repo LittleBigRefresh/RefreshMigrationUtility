@@ -5,9 +5,7 @@ using Refresh.Database.Models.Users;
 namespace Refresh.Database.Models.Relations;
 #nullable disable
 
-#if POSTGRES
 [PrimaryKey(nameof(LevelId), nameof(UserId))]
-#endif
 public partial class FavouriteLevelRelation
 {
     [ForeignKey(nameof(LevelId))]

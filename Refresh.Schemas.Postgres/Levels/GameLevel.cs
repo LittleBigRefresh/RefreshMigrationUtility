@@ -89,12 +89,6 @@ public partial class GameLevel
     public float Score { get; set; }
 
 #nullable disable
-    #if !POSTGRES
-    // ILists can't be serialized to XML, and Lists/Arrays cannot be stored in realm,
-    // hence _SkillRewards and SkillRewards both existing
-    // ReSharper disable once InconsistentNaming
-    public IList<GameSkillReward> _SkillRewards { get; }
-    #endif
     
     public IList<GameReview> Reviews { get; }
     
@@ -105,12 +99,6 @@ public partial class GameLevel
     {
         get => [];
         set => _ = value;
-    }
-    
-    [NotMapped] public int SequentialId
-    {
-        get => this.LevelId;
-        set => this.LevelId = value;
     }
 
     public GameUser? Publisher { get; set; }

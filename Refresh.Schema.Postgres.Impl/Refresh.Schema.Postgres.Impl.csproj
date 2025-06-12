@@ -1,17 +1,14 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <OutputType>Exe</OutputType>
         <TargetFramework>net9.0</TargetFramework>
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
+        <RootNamespace>Refresh.Schema.Postgres.Migrations</RootNamespace>
     </PropertyGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\Refresh.Common\Refresh.Common.csproj" />
-      <ProjectReference Include="..\Refresh.Schema.Postgres.Impl\Refresh.Schema.Postgres.Impl.csproj" />
       <ProjectReference Include="..\Refresh.Schemas.Postgres\Refresh.Schemas.Postgres.csproj" />
-      <ProjectReference Include="..\Refresh.Schemas.Realm\Refresh.Schemas.Realm.csproj" />
     </ItemGroup>
 
 </Project>

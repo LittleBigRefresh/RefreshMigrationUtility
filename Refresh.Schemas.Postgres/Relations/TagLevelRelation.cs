@@ -6,9 +6,7 @@ namespace Refresh.Database.Models.Relations;
 
 #nullable disable
 
-#if POSTGRES
 [PrimaryKey(nameof(_Tag), nameof(UserId), nameof(LevelId))]
-#endif
 public partial class TagLevelRelation
 {
     [ForeignKey(nameof(LevelId))]

@@ -5,9 +5,7 @@ namespace Refresh.Database.Models.Relations;
 
 #nullable disable
 
-#if POSTGRES
 [PrimaryKey(nameof(UserId), nameof(IpAddress))]
-#endif
 public partial class GameUserVerifiedIpRelation
 {
     [ForeignKey(nameof(UserId))]

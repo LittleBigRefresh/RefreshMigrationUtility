@@ -1,0 +1,85 @@
+﻿using System.Diagnostics.CodeAnalysis;
+using Microsoft.EntityFrameworkCore;
+using MongoDB.Bson;
+using Npgsql;
+using Refresh.Database.Compatibility;
+using Refresh.Database.Models.Authentication;
+using Refresh.Database.Models.Activity;
+using Refresh.Database.Models.Assets;
+using Refresh.Database.Models.Comments;
+using Refresh.Database.Models.Contests;
+using Refresh.Database.Models.Users;
+using Refresh.Database.Models.Levels.Challenges;
+using Refresh.Database.Models.Levels.Scores;
+using Refresh.Database.Models.Levels;
+using Refresh.Database.Models.Notifications;
+using Refresh.Database.Models.Photos;
+using Refresh.Database.Models.Playlists;
+using Refresh.Database.Models.Relations;
+using Refresh.Database.Models;
+
+namespace Refresh.Database;
+
+[SuppressMessage("ReSharper", "InconsistentlySynchronizedField")]
+public partial class GameDatabaseContext : DbContext
+{
+    internal DbSet<GameUser> GameUsers { get; set; }
+    internal DbSet<Token> Tokens { get; set; }
+    internal DbSet<GameLevel> GameLevels { get; set; }
+    internal DbSet<GameProfileComment> GameProfileComments { get; set; }
+    internal DbSet<GameLevelComment> GameLevelComments { get; set; }
+    internal DbSet<ProfileCommentRelation> ProfileCommentRelations { get; set; }
+    internal DbSet<LevelCommentRelation> LevelCommentRelations { get; set; }
+    internal DbSet<FavouriteLevelRelation> FavouriteLevelRelations { get; set; }
+    internal DbSet<QueueLevelRelation> QueueLevelRelations { get; set; }
+    internal DbSet<FavouriteUserRelation> FavouriteUserRelations { get; set; }
+    internal DbSet<PlayLevelRelation> PlayLevelRelations { get; set; }
+    internal DbSet<UniquePlayLevelRelation> UniquePlayLevelRelations { get; set; }
+    internal DbSet<RateLevelRelation> RateLevelRelations { get; set; }
+    internal DbSet<Event> Events { get; set; }
+    internal DbSet<GameSubmittedScore> GameSubmittedScores { get; set; }
+    internal DbSet<GameAsset> GameAssets { get; set; }
+    internal DbSet<GameNotification> GameNotifications { get; set; }
+    internal DbSet<GamePhoto> GamePhotos { get; set; }
+    internal DbSet<GameIpVerificationRequest> GameIpVerificationRequests { get; set; }
+    internal DbSet<GameAnnouncement> GameAnnouncements { get; set; }
+    internal DbSet<QueuedRegistration> QueuedRegistrations { get; set; }
+    internal DbSet<EmailVerificationCode> EmailVerificationCodes { get; set; }
+    internal DbSet<RequestStatistics> RequestStatistics { get; set; }
+    internal DbSet<GameContest> GameContests { get; set; }
+    internal DbSet<AssetDependencyRelation> AssetDependencyRelations { get; set; }
+    internal DbSet<GameReview> GameReviews { get; set; }
+    internal DbSet<DisallowedUser> DisallowedUsers { get; set; }
+    internal DbSet<RateReviewRelation> RateReviewRelations { get; set; }
+    internal DbSet<TagLevelRelation> TagLevelRelations { get; set; }
+    internal DbSet<GamePlaylist> GamePlaylists { get; set; }
+    internal DbSet<LevelPlaylistRelation> LevelPlaylistRelations { get; set; }
+    internal DbSet<SubPlaylistRelation> SubPlaylistRelations { get; set; }
+    internal DbSet<FavouritePlaylistRelation> FavouritePlaylistRelations { get; set; }
+    internal DbSet<GameUserVerifiedIpRelation> GameUserVerifiedIpRelations { get; set; }
+    internal DbSet<GameChallenge> GameChallenges { get; set; }
+    internal DbSet<GameChallengeScore> GameChallengeScores { get; set; }
+    internal DbSet<PinProgressRelation> PinProgressRelations { get; set; }
+    internal DbSet<ProfilePinRelation> ProfilePinRelations { get; set; }
+    
+    protected override void OnConfiguring(DbContextOptionsBuilder options)
+    {
+        base.OnConfiguring(options);
+        NpgsqlConnectionStringBuilder builder = new()
+        {
+            Database = "refresh",
+            Username = "refresh",
+            Password = "refresh",
+            Host = "localhost",
+            Port = 5432,
+        };
+        options.UseNpgsql(builder.ToString());
+    }
+
+    protected override void ConfigureConventions(ModelConfigurationBuilder config)
+    {
+        config
+            .Properties<ObjectId>()
+            .HaveConversion<ObjectIdConverter>();
+    }
+}

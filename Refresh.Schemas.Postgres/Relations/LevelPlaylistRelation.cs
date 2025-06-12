@@ -8,9 +8,7 @@ namespace Refresh.Database.Models.Relations;
 /// <summary>
 /// A mapping of playlist -> sub-level
 /// </summary>
-#if POSTGRES
 [PrimaryKey(nameof(PlaylistId), nameof(LevelId))]
-#endif
 public partial class LevelPlaylistRelation
 {
     /// <summary>
