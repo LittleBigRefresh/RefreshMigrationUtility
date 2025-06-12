@@ -2,6 +2,14 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RefreshMigrationUtility", "RefreshMigrationUtility\RefreshMigrationUtility.csproj", "{F3D03833-0FEE-426D-8590-513AB5C53103}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Refresh.Schemas.Realm", "Refresh.Schemas.Realm\Refresh.Schemas.Realm.csproj", "{7546CE5A-198E-4B1E-B29D-E7E93A694C87}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Refresh.Common", "Refresh.Common\Refresh.Common.csproj", "{67B84099-D2CC-4DFB-A0D0-CAC2C9809350}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Refresh.Schemas.Postgres", "Refresh.Schemas.Postgres\Refresh.Schemas.Postgres.csproj", "{4DF3B7E9-CC11-464E-ACEE-19003E1800D3}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Schemas", "Schemas", "{C84FA141-0AE7-4866-9D06-A910D251345F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -12,5 +20,21 @@ Global
 		{F3D03833-0FEE-426D-8590-513AB5C53103}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F3D03833-0FEE-426D-8590-513AB5C53103}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F3D03833-0FEE-426D-8590-513AB5C53103}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7546CE5A-198E-4B1E-B29D-E7E93A694C87}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7546CE5A-198E-4B1E-B29D-E7E93A694C87}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7546CE5A-198E-4B1E-B29D-E7E93A694C87}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7546CE5A-198E-4B1E-B29D-E7E93A694C87}.Release|Any CPU.Build.0 = Release|Any CPU
+		{67B84099-D2CC-4DFB-A0D0-CAC2C9809350}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{67B84099-D2CC-4DFB-A0D0-CAC2C9809350}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{67B84099-D2CC-4DFB-A0D0-CAC2C9809350}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{67B84099-D2CC-4DFB-A0D0-CAC2C9809350}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4DF3B7E9-CC11-464E-ACEE-19003E1800D3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4DF3B7E9-CC11-464E-ACEE-19003E1800D3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4DF3B7E9-CC11-464E-ACEE-19003E1800D3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4DF3B7E9-CC11-464E-ACEE-19003E1800D3}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{4DF3B7E9-CC11-464E-ACEE-19003E1800D3} = {C84FA141-0AE7-4866-9D06-A910D251345F}
+		{7546CE5A-198E-4B1E-B29D-E7E93A694C87} = {C84FA141-0AE7-4866-9D06-A910D251345F}
 	EndGlobalSection
 EndGlobal
