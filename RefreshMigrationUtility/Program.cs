@@ -8,3 +8,4 @@ postgres.Database.Migrate();
 RealmDatabaseContext realm = new(@"X:\Refresh\Refresh.GameServer\bin\Debug\net9.0\refreshGameServer.realm");
 
 Console.WriteLine("Both databases opened successfully");
+Console.WriteLine("Realm has " + realm.Events.Count() + " events");
