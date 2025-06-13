@@ -38,6 +38,11 @@ runner.AddMigrator<AssetDependencyMigrator>();
 runner.AddMigrator<ContestMigrator>();
 runner.AddMigrator<ChallengeMigrator>();
 runner.AddMigrator<ChallengeScoreMigrator>();
+runner.AddMigrator<LevelCommentMigrator>();
+runner.AddMigrator<ProfileCommentMigrator>();
+runner.AddMigrator<ReviewMigrator>();
+runner.AddMigrator<VerifiedIpMigrator>();
+runner.AddMigrator<ScoreMigrator>();
 
 runner.AddMigrator<FavouriteLevelMigrator>();
 runner.AddMigrator<FavouritePlaylistMigrator>();
