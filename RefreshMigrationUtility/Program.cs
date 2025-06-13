@@ -47,6 +47,10 @@ runner.AddMigrator<ScoreMigrator>();
 runner.AddMigrator<FavouriteLevelMigrator>();
 runner.AddMigrator<FavouritePlaylistMigrator>();
 runner.AddMigrator<FavouriteUserMigrator>();
+runner.AddMigrator<LevelPlaylistMigrator>();
+runner.AddMigrator<PinProgressMigrator>();
+runner.AddMigrator<ProfilePinMigrator>();
+// runner.AddMigrator<PlayLevelMigrator>(); // TODO: needs some thought. maybe a schema update
 
 runner.AddBackfiller<UserRootPlaylistBackfiller>();
 
