@@ -10,6 +10,15 @@ public class PinProgressMigrator : UserDependentMigrator<RealmPinProgressRelatio
     public PinProgressMigrator(RealmDatabaseContext realm, GameDatabaseContext ef) : base(realm, ef)
     {}
 
+    protected override bool IsOldValid(GameDatabaseContext ef, RealmPinProgressRelation old)
+    {
+        return old.Realm!.All<RealmPinProgressRelation>()
+            .Where(r => r.PinId == old.PinId)
+            .Where(r => r.Publisher == old.Publisher)
+            .AsEnumerable()
+            .Max(r => r.LastUpdated) == old.LastUpdated;
+    }
+
     protected override PinProgressRelation Map(GameDatabaseContext ef, RealmPinProgressRelation old)
     {
         return new PinProgressRelation()
