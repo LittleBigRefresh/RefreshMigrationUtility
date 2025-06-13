@@ -12,5 +12,5 @@ public class UserRootPlaylistBackfiller : Backfiller<GameUser, GamePlaylist>
         src.RootPlaylist = playlist;
     }
 
-    public override IEnumerable<Type> NeedsTypes => [typeof(GameUser), typeof(GamePlaylist)];
+    public override IEnumerable<Type> NeedsTypes { get; } = [typeof(GameUser), typeof(GamePlaylist)];
 }

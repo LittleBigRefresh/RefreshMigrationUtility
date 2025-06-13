@@ -30,5 +30,5 @@ public abstract class Backfiller<TSource, TProvides> : MigrationTask, IBackfille
     public override Type SourceType => typeof(TSource);
     public override Type ProvidesType => typeof(TProvides);
 
-    public override IEnumerable<Type> NeedsTypes => [typeof(TSource)];
+    public override IEnumerable<Type> NeedsTypes { get; } = [typeof(TSource)];
 }

@@ -45,7 +45,7 @@ public abstract class Migrator<TOld, TNew> : MigrationTask
         ef.SaveChanges();
     }
 
-    public override string MigrationType => $"{typeof(TOld).Name}->{typeof(TNew).Name}";
+    public override string MigrationType { get; } = $"{typeof(TOld).Name}->{typeof(TNew).Name}";
     
     public override Type SourceType => typeof(TOld);
     public override Type ProvidesType => typeof(TNew);

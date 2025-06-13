@@ -12,5 +12,5 @@ public abstract class UserDependentMigrator<TOld, TNew> : Migrator<TOld, TNew>
     protected UserDependentMigrator(RealmDatabaseContext realm, GameDatabaseContext ef) : base(realm, ef)
     {}
     
-    public override IEnumerable<Type> NeedsTypes => [typeof(GameUser)];
+    public override IEnumerable<Type> NeedsTypes { get; } = [typeof(GameUser)];
 }
