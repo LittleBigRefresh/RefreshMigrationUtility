@@ -50,7 +50,7 @@ runner.AddMigrator<FavouriteUserMigrator>();
 runner.AddMigrator<LevelPlaylistMigrator>();
 runner.AddMigrator<PinProgressMigrator>();
 runner.AddMigrator<ProfilePinMigrator>();
-// runner.AddMigrator<PlayLevelMigrator>(); // TODO: needs some thought. maybe a schema update
+runner.AddMigrator<PlayLevelMigrator>();
 runner.AddMigrator<QueueMigrator>();
 runner.AddMigrator<RateLevelMigrator>();
 runner.AddMigrator<RateReviewMigrator>();
