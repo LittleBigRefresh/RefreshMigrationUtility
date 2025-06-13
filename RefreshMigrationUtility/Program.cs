@@ -35,10 +35,15 @@ runner.AddMigrator<NotificationMigrator>();
 runner.AddMigrator<AssetMigrator>();
 runner.AddMigrator<EventMigrator>();
 runner.AddMigrator<AssetDependencyMigrator>();
+runner.AddMigrator<ContestMigrator>();
+runner.AddMigrator<ChallengeMigrator>();
+runner.AddMigrator<ChallengeScoreMigrator>();
 
 runner.AddMigrator<FavouriteLevelMigrator>();
+runner.AddMigrator<FavouritePlaylistMigrator>();
+runner.AddMigrator<FavouriteUserMigrator>();
 
-// runner.AddBackfiller<UserRootPlaylistBackfiller>();
+runner.AddBackfiller<UserRootPlaylistBackfiller>();
 
 ProgressReporter.Wall("Beginning migration of data! Do not interrupt this process.");
 
