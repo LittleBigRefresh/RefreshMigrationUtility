@@ -10,30 +10,12 @@ public class UniquePlayLevelMigrator : UserAndLevelDependentMigrator<RealmUnique
 {
     public UniquePlayLevelMigrator(RealmDatabaseContext realm, GameDatabaseContext ef) : base(realm, ef)
     {}
-    
-    public override void MigrateChunk(RealmDatabaseContext realm, GameDatabaseContext ef)
+
+    protected override bool IsOldValid(GameDatabaseContext ef, RealmUniquePlayLevelRelation old)
     {
-        IEnumerable<RealmUniquePlayLevelRelation> chunk = realm.All<RealmUniquePlayLevelRelation>()
-            .AsEnumerable()
-            .Skip(Progress)
-            .Take(TakeSize);
-
-        DbSet<UniquePlayLevelRelation> set = ef.Set<UniquePlayLevelRelation>();
-
-        foreach (RealmUniquePlayLevelRelation old in chunk)
-        {
-            // some of these are apparently null in realm so we have to check here
-            if (old.Level != null && ef.GameLevels.Select(u => u.LevelId).Contains(old.Level.LevelId) &&
-                old.User != null && ef.GameUsers.Select(u => u.UserId).Contains(old.User.UserId))
-            {
-                UniquePlayLevelRelation mapped = Map(ef, old);
-                set.Add(mapped);
-            }
-
-            Progress++;
-        }
-
-        ef.SaveChanges();
+        return old.Level != null && old.User != null &&
+                                 ef.GameLevels.Select(u => u.LevelId).Contains(old.Level.LevelId) &&
+                                 ef.GameUsers.Select(u => u.UserId).Contains(old.User.UserId);
     }
 
     protected override UniquePlayLevelRelation Map(GameDatabaseContext ef, RealmUniquePlayLevelRelation old)

@@ -10,30 +10,11 @@ public class SubPlaylistMigrator : Migrator<RealmSubPlaylistRelation, SubPlaylis
 {
     public SubPlaylistMigrator(RealmDatabaseContext realm, GameDatabaseContext ef) : base(realm, ef)
     {}
-    
-    public override void MigrateChunk(RealmDatabaseContext realm, GameDatabaseContext ef)
+
+    protected override bool IsOldValid(GameDatabaseContext ef, RealmSubPlaylistRelation old)
     {
-        IEnumerable<RealmSubPlaylistRelation> chunk = realm.All<RealmSubPlaylistRelation>()
-            .AsEnumerable()
-            .Skip(Progress)
-            .Take(TakeSize);
-
-        DbSet<SubPlaylistRelation> set = ef.Set<SubPlaylistRelation>();
-
-        foreach (RealmSubPlaylistRelation old in chunk)
-        {
-            // some of these are apparently null in realm so we have to check here
-            if (ef.GamePlaylists.Select(p => p.PlaylistId).Contains(old.Playlist.PlaylistId) &&
-                ef.GamePlaylists.Select(p => p.PlaylistId).Contains(old.SubPlaylist.PlaylistId))
-            {
-                SubPlaylistRelation mapped = Map(ef, old);
-                set.Add(mapped);
-            }
-
-            Progress++;
-        }
-
-        ef.SaveChanges();
+        return ef.GamePlaylists.Select(p => p.PlaylistId).Contains(old.Playlist.PlaylistId) &&
+               ef.GamePlaylists.Select(p => p.PlaylistId).Contains(old.SubPlaylist.PlaylistId);
     }
 
     protected override SubPlaylistRelation Map(GameDatabaseContext ef, RealmSubPlaylistRelation old)

@@ -10,29 +10,10 @@ public class LevelCommentMigrator : UserAndLevelDependentMigrator<RealmGameLevel
 {
     public LevelCommentMigrator(RealmDatabaseContext realm, GameDatabaseContext ef) : base(realm, ef)
     {}
-    
-    public override void MigrateChunk(RealmDatabaseContext realm, GameDatabaseContext ef)
+
+    protected override bool IsOldValid(GameDatabaseContext ef, RealmGameLevelComment old)
     {
-        IEnumerable<RealmGameLevelComment> chunk = realm.All<RealmGameLevelComment>()
-            .AsEnumerable()
-            .Skip(Progress)
-            .Take(TakeSize);
-
-        DbSet<GameLevelComment> set = ef.Set<GameLevelComment>();
-
-        foreach (RealmGameLevelComment old in chunk)
-        {
-            // some of these are apparently null in realm so we have to check here
-            if (old.Level != null)
-            {
-                GameLevelComment mapped = Map(ef, old);
-                set.Add(mapped);
-            }
-
-            Progress++;
-        }
-
-        ef.SaveChanges();
+        return old.Level != null;
     }
 
     protected override GameLevelComment Map(GameDatabaseContext ef, RealmGameLevelComment old)

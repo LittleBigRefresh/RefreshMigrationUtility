@@ -10,29 +10,12 @@ public class RateLevelMigrator : UserAndLevelDependentMigrator<RealmRateLevelRel
 {
     public RateLevelMigrator(RealmDatabaseContext realm, GameDatabaseContext ef) : base(realm, ef)
     {}
-    
-    public override void MigrateChunk(RealmDatabaseContext realm, GameDatabaseContext ef)
+
+    protected override bool IsOldValid(GameDatabaseContext ef, RealmRateLevelRelation old)
     {
-        IEnumerable<RealmRateLevelRelation> chunk = realm.All<RealmRateLevelRelation>()
-            .AsEnumerable()
-            .Skip(Progress)
-            .Take(TakeSize);
-
-        DbSet<RateLevelRelation> set = ef.Set<RateLevelRelation>();
-
-        foreach (RealmRateLevelRelation old in chunk)
-        {
-            // some of these are apparently null in realm so we have to check here
-            if (old.User != null && old.Level != null && ef.GameLevels.Select(u => u.LevelId).Contains(old.Level.LevelId))
-            {
-                RateLevelRelation mapped = Map(ef, old);
-                set.Add(mapped);
-            }
-
-            Progress++;
-        }
-
-        ef.SaveChanges();
+        return old.User != null &&
+               old.Level != null &&
+               ef.GameLevels.Select(u => u.LevelId).Contains(old.Level.LevelId);
     }
 
     protected override RateLevelRelation Map(GameDatabaseContext ef, RealmRateLevelRelation old)

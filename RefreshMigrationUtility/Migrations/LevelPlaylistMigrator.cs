@@ -11,29 +11,10 @@ public class LevelPlaylistMigrator : Migrator<RealmLevelPlaylistRelation, LevelP
 {
     public LevelPlaylistMigrator(RealmDatabaseContext realm, GameDatabaseContext ef) : base(realm, ef)
     {}
-    
-    public override void MigrateChunk(RealmDatabaseContext realm, GameDatabaseContext ef)
+
+    protected override bool IsOldValid(GameDatabaseContext ef, RealmLevelPlaylistRelation old)
     {
-        IEnumerable<RealmLevelPlaylistRelation> chunk = realm.All<RealmLevelPlaylistRelation>()
-            .AsEnumerable()
-            .Skip(Progress)
-            .Take(TakeSize);
-
-        DbSet<LevelPlaylistRelation> set = ef.Set<LevelPlaylistRelation>();
-
-        foreach (RealmLevelPlaylistRelation old in chunk)
-        {
-            // some of these are apparently null in realm so we have to check here
-            if (ef.GamePlaylists.Select(u => u.PlaylistId).Contains(old.Playlist.PlaylistId))
-            {
-                LevelPlaylistRelation mapped = Map(ef, old);
-                set.Add(mapped);
-            }
-
-            Progress++;
-        }
-
-        ef.SaveChanges();
+        return ef.GamePlaylists.Select(u => u.PlaylistId).Contains(old.Playlist.PlaylistId);
     }
 
     protected override LevelPlaylistRelation Map(GameDatabaseContext ef, RealmLevelPlaylistRelation old)

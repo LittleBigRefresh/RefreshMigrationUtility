@@ -10,29 +10,10 @@ public class VerifiedIpMigrator : UserDependentMigrator<RealmGameUserVerifiedIpR
 {
     public VerifiedIpMigrator(RealmDatabaseContext realm, GameDatabaseContext ef) : base(realm, ef)
     {}
-    
-    public override void MigrateChunk(RealmDatabaseContext realm, GameDatabaseContext ef)
+
+    protected override bool IsOldValid(GameDatabaseContext ef, RealmGameUserVerifiedIpRelation old)
     {
-        IEnumerable<RealmGameUserVerifiedIpRelation> chunk = realm.All<RealmGameUserVerifiedIpRelation>()
-            .AsEnumerable()
-            .Skip(Progress)
-            .Take(TakeSize);
-
-        DbSet<GameUserVerifiedIpRelation> set = ef.Set<GameUserVerifiedIpRelation>();
-
-        foreach (RealmGameUserVerifiedIpRelation old in chunk)
-        {
-            // some of these are apparently null in realm so we have to check here
-            if (ef.GameUsers.Select(u => u.UserId).Contains(old.User.UserId))
-            {
-                GameUserVerifiedIpRelation mapped = Map(ef, old);
-                set.Add(mapped);
-            }
-
-            Progress++;
-        }
-
-        ef.SaveChanges();
+        return ef.GameUsers.Select(u => u.UserId).Contains(old.User.UserId);
     }
 
     protected override GameUserVerifiedIpRelation Map(GameDatabaseContext ef, RealmGameUserVerifiedIpRelation old)

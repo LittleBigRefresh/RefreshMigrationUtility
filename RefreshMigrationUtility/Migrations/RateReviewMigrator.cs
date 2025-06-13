@@ -13,29 +13,11 @@ public class RateReviewMigrator : Migrator<RealmRateReviewRelation, RateReviewRe
 {
     public RateReviewMigrator(RealmDatabaseContext realm, GameDatabaseContext ef) : base(realm, ef)
     {}
-    
-    public override void MigrateChunk(RealmDatabaseContext realm, GameDatabaseContext ef)
+
+    protected override bool IsOldValid(GameDatabaseContext ef, RealmRateReviewRelation old)
     {
-        IEnumerable<RealmRateReviewRelation> chunk = realm.All<RealmRateReviewRelation>()
-            .AsEnumerable()
-            .Skip(Progress)
-            .Take(TakeSize);
-
-        DbSet<RateReviewRelation> set = ef.Set<RateReviewRelation>();
-
-        foreach (RealmRateReviewRelation old in chunk)
-        {
-            // some of these are apparently null in realm so we have to check here
-            if (old.Review != null && ef.GameReviews.Select(u => u.ReviewId).Contains(old.Review.ReviewId))
-            {
-                RateReviewRelation mapped = Map(ef, old);
-                set.Add(mapped);
-            }
-
-            Progress++;
-        }
-
-        ef.SaveChanges();
+        return old.Review != null &&
+               ef.GameReviews.Select(u => u.ReviewId).Contains(old.Review.ReviewId);
     }
 
     protected override RateReviewRelation Map(GameDatabaseContext ef, RealmRateReviewRelation old)

@@ -20,6 +20,7 @@ public class AssetDependencyMigrator : Migrator<RealmAssetDependencyRelation, As
             .Take(TakeSize)
             .Select(old =>
             {
+                Migrated++;
                 Progress++;
                 return Map(ef, old);
             })
