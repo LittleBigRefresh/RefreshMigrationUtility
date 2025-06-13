@@ -54,6 +54,9 @@ runner.AddMigrator<ProfilePinMigrator>();
 runner.AddMigrator<QueueMigrator>();
 runner.AddMigrator<RateLevelMigrator>();
 runner.AddMigrator<RateReviewMigrator>();
+runner.AddMigrator<SubPlaylistMigrator>();
+runner.AddMigrator<TagMigrator>();
+runner.AddMigrator<UniquePlayLevelMigrator>();
 
 runner.AddBackfiller<UserRootPlaylistBackfiller>();
 
