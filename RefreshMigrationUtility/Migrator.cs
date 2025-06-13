@@ -12,7 +12,7 @@ public abstract class Migrator<TOld, TNew> : MigrationTask
     where TNew : class
 {
     protected internal override int Total { get; set; }
-    protected override int Progress { get; set; }
+    public override int Progress { get; set; }
 
     protected Migrator(RealmDatabaseContext realm, GameDatabaseContext ef)
     {

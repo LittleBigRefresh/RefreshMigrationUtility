@@ -10,7 +10,7 @@ public abstract class MigrationTask
     public abstract void MigrateChunk(RealmDatabaseContext realm, GameDatabaseContext ef);
     public abstract string MigrationType { get; }
 
-    protected abstract int Progress { get; set; }
+    public abstract int Progress { get; set; }
     protected internal abstract int Total { get; set; }
     
     public abstract Type SourceType { get; }

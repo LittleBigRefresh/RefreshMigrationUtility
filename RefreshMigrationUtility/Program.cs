@@ -40,9 +40,7 @@ runner.AddBackfiller<UserRootPlaylistBackfiller>();
 
 ProgressReporter.Wall("Beginning migration of data! Do not interrupt this process.");
 
-Stopwatch sw = Stopwatch.StartNew();
-runner.RunAllTasks();
-sw.Stop();
+runner.StartAllTasks();
+ProgressReporter.ReportProgress(runner);
 
 ProgressReporter.Wall("Migration has successfully completed!");
-Console.WriteLine("Migration took " + sw.Elapsed);

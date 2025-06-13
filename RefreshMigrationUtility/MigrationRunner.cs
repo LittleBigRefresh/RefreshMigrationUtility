@@ -13,6 +13,9 @@ public class MigrationRunner
     private readonly List<MigrationTask> _tasks = [];
     private readonly MigrationConfig _config;
 
+    public IReadOnlyList<MigrationTask> Tasks => this._tasks.AsReadOnly();
+    public bool Complete => _tasks.All(t => t.Complete);
+
     public MigrationRunner(MigrationConfig config)
     {
         this._config = config;
@@ -36,17 +39,15 @@ public class MigrationRunner
             
             if(!task.Complete)
                 _taskQueue.Enqueue(task);
-
-            Console.WriteLine(task);
         }
     }
 
-    public void RunAllTasks()
+    public void StartAllTasks()
     {
         int nproc = Environment.ProcessorCount;
         // nproc = 1;
 
-        Thread[] threads = new Thread[nproc];
+        // Thread[] threads = new Thread[nproc];
         for (int i = 0; i < nproc; i++)
         {
             Thread thread = new(MigrateLoop)
@@ -54,14 +55,14 @@ public class MigrationRunner
                 Name = $"Migration Thread {i}"
             };
 
-            threads[i] = thread;
+            // threads[i] = thread;
             thread.Start();
         }
         
-        foreach (Thread thread in threads)
-        {
-            thread.Join();
-        }
+        // foreach (Thread thread in threads)
+        // {
+            // thread.Join();
+        // }
     }
 
     private void AddTask(MigrationTask task)

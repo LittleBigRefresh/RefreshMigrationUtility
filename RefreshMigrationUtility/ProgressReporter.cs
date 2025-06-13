@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using System.Diagnostics;
+using Microsoft.EntityFrameworkCore;
 using Refresh.Database;
 using Refresh.Database.Models.Levels;
 using Refresh.Schema.Realm.Impl;
@@ -61,6 +62,43 @@ public static class ProgressReporter
 
     public static void ReportProgress(MigrationRunner runner)
     {
+        Stopwatch sw = Stopwatch.StartNew();
+        while (!runner.Complete)
+        {
+            Console.Clear();
+            Console.ForegroundColor = ConsoleColor.White;
+            Console.WriteLine("Migration Status");
+            Console.WriteLine("Running for " + sw.Elapsed);
+            Console.WriteLine();
+            
+            Console.ForegroundColor = ConsoleColor.Green;
+            Console.WriteLine("Complete tasks:");
+            foreach (MigrationTask task in runner.Tasks.Where(t => t.Complete))
+            {
+                Console.WriteLine(task.ToString());
+            }
         
+            Console.WriteLine();
+            Console.ForegroundColor = ConsoleColor.Yellow;
+            Console.WriteLine("In progress:");
+            foreach (MigrationTask task in runner.Tasks.Where(t => !t.Complete && t.Progress > 0))
+            {
+                Console.WriteLine(task.ToString());
+            }
+            
+            Console.WriteLine();
+            Console.ForegroundColor = ConsoleColor.DarkGray;
+            Console.WriteLine("Not started:");
+            foreach (MigrationTask task in runner.Tasks.Where(t => !t.Complete && t.Progress <= 0))
+            {
+                Console.WriteLine(task.ToString());
+            }
+            
+            Console.ResetColor();
+            Thread.Sleep(20);
+        }
+        
+        Console.WriteLine();
+        Console.WriteLine($"Migration took {sw.Elapsed}!");
     }
 }
