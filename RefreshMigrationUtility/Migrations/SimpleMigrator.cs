@@ -1,7 +1,6 @@
 ﻿using System.Collections.Frozen;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Reflection;
-using JetBrains.Annotations;
 using Realms;
 using Refresh.Database;
 using Refresh.Schema.Realm.Impl;
@@ -43,7 +42,7 @@ public class SimpleMigrator<TOld, TNew> : Migrator<TOld, TNew> where TNew : clas
 
     private readonly FrozenDictionary<PropertyInfo, PropertyInfo> _newToOld;
 
-    public override TNew Map(TOld old)
+    public override TNew Map(GameDatabaseContext ef, TOld old)
     {
         TNew mapped = new();
         foreach (PropertyInfo newInfo in _newProperties)

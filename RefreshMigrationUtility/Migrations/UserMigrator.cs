@@ -9,7 +9,7 @@ public class UserMigrator : Migrator<RealmGameUser, GameUser>
     public UserMigrator(RealmDatabaseContext realm, GameDatabaseContext ef) : base(realm, ef)
     {}
 
-    public override GameUser Map(RealmGameUser old)
+    public override GameUser Map(GameDatabaseContext ef, RealmGameUser old)
     {
         return new GameUser
         {

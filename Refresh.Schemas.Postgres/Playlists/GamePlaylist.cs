@@ -56,10 +56,4 @@ public partial class GamePlaylist
     /// Whether or not this playlist is a root playlist. This is to let us hide the root playlists when we 
     /// </summary>
     public bool IsRoot { get; set; }
-    
-    [NotMapped] public int SequentialId
-    {
-        get => this.PlaylistId;
-        set => this.PlaylistId = value;
-    }
 }

@@ -7,11 +7,11 @@ using Refresh.Schema.Realm.Impl;
 namespace RefreshMigrationUtility;
 
 [UsedImplicitly(ImplicitUseKindFlags.InstantiatedWithFixedConstructorSignature, ImplicitUseTargetFlags.WithInheritors)]
-public abstract class Migrator<TOld, TNew> : Migrator
+public abstract class Migrator<TOld, TNew> : MigrationTask
     where TOld : IRealmObject
     where TNew : class
 {
-    protected override int Total { get; set; }
+    protected internal override int Total { get; set; }
     protected override int Progress { get; set; }
 
     protected Migrator(RealmDatabaseContext realm, GameDatabaseContext ef)
@@ -23,7 +23,7 @@ public abstract class Migrator<TOld, TNew> : Migrator
         }
     }
 
-    public abstract TNew Map(TOld old);
+    public abstract TNew Map(GameDatabaseContext ef, TOld old);
 
     public override void MigrateChunk(RealmDatabaseContext realm, GameDatabaseContext ef)
     {
@@ -37,7 +37,7 @@ public abstract class Migrator<TOld, TNew> : Migrator
 
         foreach (TOld old in chunk)
         {
-            TNew mapped = Map(old);
+            TNew mapped = Map(ef, old);
             set.Add(mapped);
             Progress++;
         }
@@ -46,20 +46,7 @@ public abstract class Migrator<TOld, TNew> : Migrator
     }
 
     public override string MigrationType => $"{typeof(TOld).Name}->{typeof(TNew).Name}";
-}
-
-public abstract class Migrator
-{
-    public abstract void MigrateChunk(RealmDatabaseContext realm, GameDatabaseContext ef);
-    public abstract string MigrationType { get; }
-
-    protected abstract int Progress { get; set; }
-    protected abstract int Total { get; set; }
-
-    public bool Complete => this.Progress >= this.Total;
     
-    public override string ToString()
-    {
-        return $"{MigrationType} ({this.Progress}/{this.Total})";
-    }
+    public override Type SourceType => typeof(TOld);
+    public override Type ProvidesType => typeof(TNew);
 }

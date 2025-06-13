@@ -1,6 +1,8 @@
-﻿using Refresh.Database.Models.Notifications;
+﻿using Refresh.Database.Models.Activity;
+using Refresh.Database.Models.Notifications;
 using RefreshMigrationUtility;
 using RefreshMigrationUtility.Migrations;
+using RefreshMigrationUtility.Migrations.Backfillers;
 
 MigrationConfig config = new()
 {
@@ -21,9 +23,12 @@ Console.WriteLine("Both databases connected successfully!");
 Console.WriteLine("Setting up migration runner");
 
 MigrationRunner runner = new(config);
-runner.AddSimpleTask<RealmGameAnnouncement, GameAnnouncement>();
-runner.AddTask<RequestStatisticsMigrator>();
-runner.AddTask<UserMigrator>();
+runner.AddSimpleMigrator<RealmGameAnnouncement, GameAnnouncement>();
+runner.AddMigrator<RequestStatisticsMigrator>();
+runner.AddMigrator<UserMigrator>();
+runner.AddMigrator<PlaylistMigrator>();
+
+runner.AddBackfiller<UserRootPlaylistBackfiller>();
 
 ProgressReporter.Wall("Beginning migration of data! Do not interrupt this process.");
 

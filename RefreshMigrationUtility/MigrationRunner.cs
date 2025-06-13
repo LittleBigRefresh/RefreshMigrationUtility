@@ -9,8 +9,8 @@ namespace RefreshMigrationUtility;
 
 public class MigrationRunner
 {
-    private readonly ConcurrentQueue<Migrator> _taskQueue = [];
-    private readonly List<Migrator> _tasks = [];
+    private readonly ConcurrentQueue<MigrationTask> _taskQueue = [];
+    private readonly List<MigrationTask> _tasks = [];
     private readonly MigrationConfig _config;
 
     public MigrationRunner(MigrationConfig config)
@@ -23,9 +23,15 @@ public class MigrationRunner
         using RealmDatabaseContext realm = new(this._config.RealmFilePath);
         using GameDatabaseContext ef = new(this._config.PostgresConnectionString);
         
-        while (_taskQueue.TryDequeue(out Migrator? task) && !task.Complete)
+        while (_taskQueue.TryDequeue(out MigrationTask? task) && !task.Complete)
         {
             Debug.Assert(task != null);
+            if (!IsTaskReady(task))
+            {
+                _taskQueue.Enqueue(task);
+                continue;
+            }
+            
             task.MigrateChunk(realm, ef);
             
             if(!task.Complete)
@@ -38,6 +44,7 @@ public class MigrationRunner
     public void RunAllTasks()
     {
         int nproc = Environment.ProcessorCount;
+        nproc = 1;
 
         Thread[] threads = new Thread[nproc];
         for (int i = 0; i < nproc; i++)
@@ -57,13 +64,13 @@ public class MigrationRunner
         }
     }
 
-    private void AddTask(Migrator task)
+    private void AddTask(MigrationTask task)
     {
         this._taskQueue.Enqueue(task);
         this._tasks.Add(task);
     }
 
-    public void AddTask<TMigrationTask>() where TMigrationTask : Migrator
+    public void AddMigrator<TMigrationTask>() where TMigrationTask : MigrationTask
     {
         using RealmDatabaseContext realm = new(this._config.RealmFilePath);
         using GameDatabaseContext ef = new(this._config.PostgresConnectionString);
@@ -74,6 +81,40 @@ public class MigrationRunner
         AddTask(task);
     }
 
-    public void AddSimpleTask<TOld, TNew>() where TOld : IRealmObject where TNew : class, new()
-        => AddTask<SimpleMigrator<TOld, TNew>>();
+    public void AddSimpleMigrator<TOld, TNew>() where TOld : IRealmObject where TNew : class, new()
+        => AddMigrator<SimpleMigrator<TOld, TNew>>();
+    
+    public void AddBackfiller<TMigrationTask>() where TMigrationTask : MigrationTask, IBackfiller
+    {
+        TMigrationTask? task = Activator.CreateInstance<TMigrationTask>();
+        Debug.Assert(task != null);
+
+        int total = this._tasks.First(t => t.ProvidesType == task.SourceType).Total;
+        task.Total = total;
+        
+        AddTask(task);
+    }
+
+    private bool IsTaskReady(MigrationTask task)
+    {
+        if (!task.NeedsTypes.Any())
+            return true;
+        
+        foreach (Type neededType in task.NeedsTypes)
+        {
+            foreach (MigrationTask otherTask in _tasks)
+            {
+                if(task == otherTask)
+                    continue;
+                
+                if(!otherTask.Complete)
+                    continue;
+
+                if (otherTask.ProvidesType == neededType)
+                    return true;
+            }
+        }
+
+        return false;
+    }
 }
