@@ -26,6 +26,8 @@ MigrationRunner runner = new(config);
 runner.AddSimpleMigrator<RealmGameAnnouncement, GameAnnouncement>();
 runner.AddMigrator<RequestStatisticsMigrator>();
 runner.AddMigrator<UserMigrator>();
+runner.AddMigrator<LevelMigrator>();
+runner.AddMigrator<AssetMigrator>();
 runner.AddMigrator<PlaylistMigrator>();
 
 runner.AddBackfiller<UserRootPlaylistBackfiller>();

@@ -1,11 +1,10 @@
 ﻿using Refresh.Database;
 using Refresh.Database.Models.Playlists;
-using Refresh.Database.Models.Users;
 using Refresh.Schema.Realm.Impl;
 
 namespace RefreshMigrationUtility.Migrations;
 
-public class PlaylistMigrator : Migrator<RealmGamePlaylist, GamePlaylist>
+public class PlaylistMigrator : UserDependentMigrator<RealmGamePlaylist, GamePlaylist>
 {
     public PlaylistMigrator(RealmDatabaseContext realm, GameDatabaseContext ef) : base(realm, ef)
     {}
@@ -27,6 +26,4 @@ public class PlaylistMigrator : Migrator<RealmGamePlaylist, GamePlaylist>
             PublisherId = old.Publisher.UserId
         };
     }
-
-    public override IEnumerable<Type> NeedsTypes => [typeof(GameUser)];
 }
