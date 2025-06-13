@@ -3,8 +3,10 @@ using Refresh.Database.Models.Activity;
 using Refresh.Database.Models.Notifications;
 using Refresh.Database.Models.Users;
 using RefreshMigrationUtility;
+using RefreshMigrationUtility.Interface;
 using RefreshMigrationUtility.Migrations;
 using RefreshMigrationUtility.Migrations.Backfillers;
+using RefreshMigrationUtility.Migrations.Migrators;
 
 MigrationConfig config = new()
 {
