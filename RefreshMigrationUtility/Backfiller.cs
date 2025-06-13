@@ -9,7 +9,7 @@ public abstract class Backfiller<TSource, TProvides> : MigrationTask, IBackfille
     {
         TSource[] set = ef.Set<TSource>()
             .Skip(Progress)
-            .Take(100)
+            .Take(TakeSize)
             .ToArray(); // need a ToArray here since that would normally cause a double query execution
 
         foreach (TSource src in set)

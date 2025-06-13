@@ -5,6 +5,8 @@ namespace RefreshMigrationUtility;
 
 public abstract class MigrationTask
 {
+    protected const int TakeSize = 4096;
+    
     public abstract void MigrateChunk(RealmDatabaseContext realm, GameDatabaseContext ef);
     public abstract string MigrationType { get; }
 
