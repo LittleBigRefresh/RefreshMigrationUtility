@@ -9,7 +9,9 @@ namespace Refresh.Database.Models.Relations;
 public partial class LevelCommentRelation
 {
     [Key] public ObjectId CommentRelationId { get; set; } = ObjectId.GenerateNewId();
+    [Required]
     public GameUser User { get; set; }
+    [Required]
     public GameLevelComment Comment { get; set; }
     [NotMapped]
     public RatingType RatingType

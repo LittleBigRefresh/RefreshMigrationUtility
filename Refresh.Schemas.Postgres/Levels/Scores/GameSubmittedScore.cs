@@ -27,6 +27,7 @@ public partial class GameSubmittedScore // TODO: Rename to GameScore
         set => this._Platform = (int)value;
     }
 
+    [Required]
     public GameLevel Level { get; set; }
     public DateTimeOffset ScoreSubmitted { get; set; }
     

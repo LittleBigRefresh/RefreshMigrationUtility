@@ -24,6 +24,7 @@ public partial class GamePlaylist
     /// The user who published the playlist
     /// </summary>
     [ForeignKey(nameof(PublisherId))]
+    [Required]
     public GameUser Publisher { get; set; }
     
     /// <summary>

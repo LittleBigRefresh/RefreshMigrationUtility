@@ -9,11 +9,15 @@ namespace Refresh.Database.Models.Relations;
 public partial class UniquePlayLevelRelation
 {
     [ForeignKey(nameof(LevelId))]
+    [Required]
     public GameLevel Level { get; set; }
     [ForeignKey(nameof(UserId))]
+    [Required]
     public GameUser User { get; set; }
     
+    [Required]
     public int LevelId { get; set; }
+    [Required]
     public ObjectId UserId { get; set; }
     
     public DateTimeOffset Timestamp { get; set; }

@@ -43,8 +43,10 @@ public partial class Token
     public DateTimeOffset ExpiresAt { get; set; }
     public DateTimeOffset LoginDate { get; set; }
     
+    [Required]
     public string IpAddress { get; set; }
 
+    [Required]
     public GameUser User { get; set; }
     
     /// <summary>

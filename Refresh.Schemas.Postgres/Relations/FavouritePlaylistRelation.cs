@@ -9,11 +9,15 @@ namespace Refresh.Database.Models.Relations;
 public partial class FavouritePlaylistRelation
 {
     [ForeignKey(nameof(PlaylistId))]
+    [Required]
     public GamePlaylist Playlist { get; set; }
     [ForeignKey(nameof(UserId))]
+    [Required]
     public GameUser User { get; set; }
     
+    [Required]
     public int PlaylistId { get; set; }
+    [Required]
     public ObjectId UserId { get; set; }
     
     public DateTimeOffset Timestamp { get; set; }

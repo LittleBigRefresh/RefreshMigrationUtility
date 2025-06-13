@@ -64,6 +64,20 @@ public partial class GameDatabaseContext : DbContext
 
     private readonly string _connectionString;
 
+    public GameDatabaseContext()
+    {
+        NpgsqlConnectionStringBuilder builder = new()
+        {
+            Database = "refresh",
+            Username = "refresh",
+            Password = "refresh",
+            Host = "localhost",
+            Port = 5432,
+        };
+
+        _connectionString = builder.ToString();
+    }
+
     public GameDatabaseContext(string connectionString)
     {
         _connectionString = connectionString;

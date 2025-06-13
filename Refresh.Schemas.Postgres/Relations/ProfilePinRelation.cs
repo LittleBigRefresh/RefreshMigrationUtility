@@ -11,8 +11,10 @@ public partial class ProfilePinRelation
 {
     public long PinId { get; set; }
     [ForeignKey(nameof(PublisherId))]
+    [Required]
     public GameUser Publisher { get; set; }
     
+    [Required]
     public ObjectId PublisherId { get; set; }
 
     /// <summary>

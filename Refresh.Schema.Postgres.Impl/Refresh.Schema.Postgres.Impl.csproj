@@ -9,6 +9,10 @@
 
     <ItemGroup>
       <ProjectReference Include="..\Refresh.Schemas.Postgres\Refresh.Schemas.Postgres.csproj" />
+      <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="9.0.3">
+        <PrivateAssets>all</PrivateAssets>
+        <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      </PackageReference>
     </ItemGroup>
 
 </Project>

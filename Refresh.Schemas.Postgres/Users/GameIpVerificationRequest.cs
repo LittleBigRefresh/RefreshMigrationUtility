@@ -7,8 +7,10 @@ namespace Refresh.Database.Models.Users;
 public partial class GameIpVerificationRequest
 {
     [ForeignKey(nameof(UserId))]
+    [Required]
     public GameUser User { get; set; }
     
+    [Required]
     public ObjectId UserId { get; set; }
     
     public string IpAddress { get; set; }

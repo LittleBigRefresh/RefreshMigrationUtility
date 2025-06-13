@@ -14,6 +14,7 @@ public partial class GameNotification
     public string Text { get; set; }
     
     public DateTimeOffset CreatedAt { get; set; }
+    [Required]
     [JsonIgnore] public GameUser User { get; set; }
     
     public string FontAwesomeIcon { get; set; }

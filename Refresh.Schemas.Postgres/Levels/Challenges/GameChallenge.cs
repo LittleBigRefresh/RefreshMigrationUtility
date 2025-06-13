@@ -10,6 +10,7 @@ public partial class GameChallenge
     public GameUser? Publisher { get; set; }
 
     #nullable disable
+    [Required]
     public GameLevel Level { get; set; }
     #nullable enable
 

@@ -15,14 +15,18 @@ public partial class LevelPlaylistRelation
     /// The playlist the level is contained in
     /// </summary>
     [ForeignKey(nameof(PlaylistId))]
+    [Required]
     public GamePlaylist Playlist { get; set; }
     /// <summary>
     /// The level contained within the playlist
     /// </summary>
     [ForeignKey(nameof(LevelId))]
+    [Required]
     public GameLevel Level { get; set; }
     
+    [Required]
     public int PlaylistId { get; set; }
+    [Required]
     public int LevelId { get; set; }
     
     /// <summary>
