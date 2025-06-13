@@ -1,4 +1,8 @@
-﻿using Refresh.Database.Models.Notifications;
+﻿using Refresh.Database.Models;
+using Refresh.Database.Models.Assets;
+using Refresh.Database.Models.Levels;
+using Refresh.Database.Models.Notifications;
+using Refresh.Database.Models.Users;
 using RefreshMigrationUtility;
 
 MigrationConfig config = new()
@@ -19,6 +23,7 @@ Console.WriteLine("Setting up migration runner");
 
 MigrationRunner runner = new(config);
 runner.AddSimpleTask<RealmGameAnnouncement, GameAnnouncement>();
+runner.AddSimpleTask<RealmRequestStatistics, RequestStatistics>();
 
 ProgressReporter.Wall("Beginning migration of data! Do not interrupt this process.");
 

@@ -7,9 +7,9 @@ using Refresh.Schema.Realm.Impl;
 
 namespace RefreshMigrationUtility.Migrations;
 
-public class SimpleMigrationTask<TOld, TNew> : MigrationTask<TOld, TNew> where TNew : class, new() where TOld : IRealmObject
+public class SimpleMigrator<TOld, TNew> : Migrator<TOld, TNew> where TNew : class, new() where TOld : IRealmObject
 {
-    public SimpleMigrationTask(RealmDatabaseContext realm, GameDatabaseContext ef) : base(realm, ef)
+    public SimpleMigrator(RealmDatabaseContext realm, GameDatabaseContext ef) : base(realm, ef)
     {
         _oldProperties = typeof(TOld)
             .GetProperties(BindingFlags.Instance | BindingFlags.Public)
@@ -24,7 +24,7 @@ public class SimpleMigrationTask<TOld, TNew> : MigrationTask<TOld, TNew> where T
 
         if (_oldProperties.Count != _newProperties.Count)
         {
-            throw new InvalidOperationException("Type is not eligible for automatic mapping");
+            throw new InvalidOperationException($"{this.MigrationType} is not eligible for automatic mapping");
         }
         
         Dictionary<PropertyInfo, PropertyInfo> newToOld = new();

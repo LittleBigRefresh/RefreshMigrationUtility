@@ -9,8 +9,8 @@ namespace RefreshMigrationUtility;
 
 public class MigrationRunner
 {
-    private readonly ConcurrentQueue<MigrationTask> _taskQueue = [];
-    private readonly List<MigrationTask> _tasks = [];
+    private readonly ConcurrentQueue<Migrator> _taskQueue = [];
+    private readonly List<Migrator> _tasks = [];
     private readonly MigrationConfig _config;
 
     public MigrationRunner(MigrationConfig config)
@@ -23,7 +23,7 @@ public class MigrationRunner
         using RealmDatabaseContext realm = new(this._config.RealmFilePath);
         using GameDatabaseContext ef = new(this._config.PostgresConnectionString);
         
-        while (_taskQueue.TryDequeue(out MigrationTask? task) && !task.Complete)
+        while (_taskQueue.TryDequeue(out Migrator? task) && !task.Complete)
         {
             Debug.Assert(task != null);
             task.MigrateChunk(realm, ef);
@@ -53,13 +53,13 @@ public class MigrationRunner
         }
     }
 
-    private void AddTask(MigrationTask task)
+    private void AddTask(Migrator task)
     {
         this._taskQueue.Enqueue(task);
         this._tasks.Add(task);
     }
 
-    public void AddTask<TMigrationTask>() where TMigrationTask : MigrationTask
+    public void AddTask<TMigrationTask>() where TMigrationTask : Migrator
     {
         using RealmDatabaseContext realm = new(this._config.RealmFilePath);
         using GameDatabaseContext ef = new(this._config.PostgresConnectionString);
@@ -71,5 +71,5 @@ public class MigrationRunner
     }
 
     public void AddSimpleTask<TOld, TNew>() where TOld : IRealmObject where TNew : class, new()
-        => AddTask<SimpleMigrationTask<TOld, TNew>>();
+        => AddTask<SimpleMigrator<TOld, TNew>>();
 }

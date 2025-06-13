@@ -5,14 +5,14 @@ using Refresh.Schema.Realm.Impl;
 
 namespace RefreshMigrationUtility;
 
-public abstract class MigrationTask<TOld, TNew> : MigrationTask
+public abstract class Migrator<TOld, TNew> : Migrator
     where TOld : IRealmObject
     where TNew : class
 {
     protected override int Total { get; set; }
     protected override int Progress { get; set; }
 
-    protected MigrationTask(RealmDatabaseContext realm, GameDatabaseContext ef)
+    protected Migrator(RealmDatabaseContext realm, GameDatabaseContext ef)
     {
         this.Total = realm.All<TOld>().Count();
         if (ef.Set<TNew>().Any())
@@ -46,7 +46,7 @@ public abstract class MigrationTask<TOld, TNew> : MigrationTask
     public override string MigrationType => $"{typeof(TOld).Name}->{typeof(TNew).Name}";
 }
 
-public abstract class MigrationTask
+public abstract class Migrator
 {
     public abstract void MigrateChunk(RealmDatabaseContext realm, GameDatabaseContext ef);
     public abstract string MigrationType { get; }
