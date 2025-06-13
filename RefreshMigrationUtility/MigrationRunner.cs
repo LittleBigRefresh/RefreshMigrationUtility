@@ -102,22 +102,13 @@ public class MigrationRunner
     {
         if (!task.NeedsTypes.Any())
             return true;
-        
-        foreach (Type neededType in task.NeedsTypes)
-        {
-            foreach (MigrationTask otherTask in _tasks)
-            {
-                if(task == otherTask)
-                    continue;
-                
-                if(!otherTask.Complete)
-                    continue;
 
-                if (otherTask.ProvidesType == neededType)
-                    return true;
-            }
-        }
-
-        return false;
+        return task.NeedsTypes.All(neededType =>
+            _tasks.Any(otherTask =>
+                otherTask != task &&
+                otherTask.Complete &&
+                otherTask.ProvidesType == neededType
+            )
+        );
     }
 }

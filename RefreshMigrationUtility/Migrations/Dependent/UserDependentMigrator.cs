@@ -3,7 +3,7 @@ using Refresh.Database;
 using Refresh.Database.Models.Users;
 using Refresh.Schema.Realm.Impl;
 
-namespace RefreshMigrationUtility;
+namespace RefreshMigrationUtility.Migrations.Dependent;
 
 public abstract class UserDependentMigrator<TOld, TNew> : Migrator<TOld, TNew>
     where TOld : IRealmObject

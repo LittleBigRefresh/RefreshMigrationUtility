@@ -36,7 +36,9 @@ runner.AddMigrator<AssetMigrator>();
 runner.AddMigrator<EventMigrator>();
 runner.AddMigrator<AssetDependencyMigrator>();
 
-runner.AddBackfiller<UserRootPlaylistBackfiller>();
+runner.AddMigrator<FavouriteLevelMigrator>();
+
+// runner.AddBackfiller<UserRootPlaylistBackfiller>();
 
 ProgressReporter.Wall("Beginning migration of data! Do not interrupt this process.");
 

@@ -1,6 +1,7 @@
 ﻿using Refresh.Database;
 using Refresh.Database.Models.Assets;
 using Refresh.Schema.Realm.Impl;
+using RefreshMigrationUtility.Migrations.Dependent;
 
 namespace RefreshMigrationUtility.Migrations;
 

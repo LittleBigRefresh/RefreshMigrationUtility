@@ -1,6 +1,7 @@
 ﻿using Refresh.Database;
 using Refresh.Database.Models.Notifications;
 using Refresh.Schema.Realm.Impl;
+using RefreshMigrationUtility.Migrations.Dependent;
 
 namespace RefreshMigrationUtility.Migrations;
 
