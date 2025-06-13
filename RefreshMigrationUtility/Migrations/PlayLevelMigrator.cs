@@ -10,32 +10,10 @@ public class PlayLevelMigrator : UserAndLevelDependentMigrator<RealmPlayLevelRel
 {
     public PlayLevelMigrator(RealmDatabaseContext realm, GameDatabaseContext ef) : base(realm, ef)
     {}
-    
-    public override void MigrateChunk(MigrationChunk chunk, GameDatabaseContext ef)
+
+    protected override bool IsOldValid(GameDatabaseContext ef, RealmPlayLevelRelation old)
     {
-        DbSet<PlayLevelRelation> set = ef.Set<PlayLevelRelation>();
-
-        IEnumerable<PlayLevelRelation> oldItems = ((MigrationChunk<RealmPlayLevelRelation>)chunk).Old
-            .Select(old =>
-            {
-                if (old.Level == null || old.User == null)
-                {
-                    OnSkip();
-                    return null;
-                }
-                
-                OnMigrate();
-                return Map(ef, old);
-            })
-            .Where(x => x != null)
-            .DistinctBy(x => (x!.LevelId, x!.UserId))!;
-
-        foreach (PlayLevelRelation mapped in oldItems)
-        {
-            set.Add(mapped);
-        }
-
-        ef.SaveChanges();
+        return old.Level != null && old.User != null;
     }
 
     protected override PlayLevelRelation Map(GameDatabaseContext ef, RealmPlayLevelRelation old)

@@ -10,25 +10,9 @@ public class AssetDependencyMigrator : Migrator<RealmAssetDependencyRelation, As
     public AssetDependencyMigrator(RealmDatabaseContext realm, GameDatabaseContext ef) : base(realm, ef)
     {}
 
-    public override void MigrateChunk(MigrationChunk chunk, GameDatabaseContext ef)
+    protected override bool IsOldValid(GameDatabaseContext ef, RealmAssetDependencyRelation old)
     {
-        DbSet<AssetDependencyRelation> set = ef.Set<AssetDependencyRelation>();
-
-        IEnumerable<AssetDependencyRelation> oldItems = ((MigrationChunk<RealmAssetDependencyRelation>)chunk)
-            .Old
-            .Select(old =>
-            {
-                OnMigrate();
-                return Map(ef, old);
-            })
-            .DistinctBy(x => (x.Dependent, x.Dependency)); // Deduplicate here, after Map()
-
-        foreach (AssetDependencyRelation mapped in oldItems)
-        {
-            set.Add(mapped);
-        }
-
-        ef.SaveChanges();
+        return ef.AssetDependencyRelations.Any(r => r.Dependency == old.Dependency && r.Dependent == old.Dependent);
     }
 
     protected override AssetDependencyRelation Map(GameDatabaseContext ef, RealmAssetDependencyRelation old)

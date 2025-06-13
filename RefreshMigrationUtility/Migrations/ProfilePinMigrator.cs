@@ -1,5 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
-using Refresh.Database;
+﻿using Refresh.Database;
 using Refresh.Database.Models.Relations;
 using Refresh.Schema.Realm.Impl;
 using RefreshMigrationUtility.Migrations.Dependent;
@@ -10,30 +9,15 @@ public class ProfilePinMigrator : UserDependentMigrator<RealmProfilePinRelation,
 {
     public ProfilePinMigrator(RealmDatabaseContext realm, GameDatabaseContext ef) : base(realm, ef)
     {}
-    
-    public override void MigrateChunk(MigrationChunk chunk, GameDatabaseContext ef)
+
+    protected override bool IsOldValid(GameDatabaseContext ef, RealmProfilePinRelation old)
     {
-        DbSet<ProfilePinRelation> set = ef.Set<ProfilePinRelation>();
-
-        IEnumerable<ProfilePinRelation> oldItems = ((MigrationChunk<RealmProfilePinRelation>)chunk).Old
-            .Select(old =>
-            {
-                OnMigrate();
-                return Map(ef, old);
-            })
-            .DistinctBy(x => (x.PinId, x.PublisherId)); // Deduplicate here, after Map()
-
-        foreach (ProfilePinRelation mapped in oldItems)
-        {
-            set.Add(mapped);
-        }
-
-        ef.SaveChanges();
+        return ef.ProfilePinRelations.Any(r => r.PinId == old.PinId && r.PublisherId == old.Publisher.UserId && r.Index == old.Index);
     }
 
     protected override ProfilePinRelation Map(GameDatabaseContext ef, RealmProfilePinRelation old)
     {
-        return new ProfilePinRelation()
+        return new ProfilePinRelation
         {
             PublisherId = old.Publisher.UserId,
             Timestamp = old.Timestamp,
