@@ -10,6 +10,11 @@ public class EventMigrator : UserDependentMigrator<RealmEvent, Event>
     public EventMigrator(RealmDatabaseContext realm, GameDatabaseContext ef) : base(realm, ef)
     {}
 
+    protected override bool IsOldValid(GameDatabaseContext ef, RealmEvent old)
+    {
+        return old.User != null;
+    }
+
     protected override Event Map(GameDatabaseContext ef, RealmEvent old)
     {
         return new Event
