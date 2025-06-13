@@ -8,7 +8,6 @@ using Refresh.Schema.Realm.Impl;
 
 namespace RefreshMigrationUtility.Migrations;
 
-[UsedImplicitly]
 public class SimpleMigrator<TOld, TNew> : Migrator<TOld, TNew> where TNew : class, new() where TOld : IRealmObject
 {
     public SimpleMigrator(RealmDatabaseContext realm, GameDatabaseContext ef) : base(realm, ef)

@@ -1,10 +1,12 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using JetBrains.Annotations;
+using Microsoft.EntityFrameworkCore;
 using Realms;
 using Refresh.Database;
 using Refresh.Schema.Realm.Impl;
 
 namespace RefreshMigrationUtility;
 
+[UsedImplicitly(ImplicitUseKindFlags.InstantiatedWithFixedConstructorSignature, ImplicitUseTargetFlags.WithInheritors)]
 public abstract class Migrator<TOld, TNew> : Migrator
     where TOld : IRealmObject
     where TNew : class

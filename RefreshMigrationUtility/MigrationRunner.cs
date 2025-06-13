@@ -27,6 +27,10 @@ public class MigrationRunner
         {
             Debug.Assert(task != null);
             task.MigrateChunk(realm, ef);
+            
+            if(!task.Complete)
+                _taskQueue.Enqueue(task);
+
             Console.WriteLine(task);
         }
     }

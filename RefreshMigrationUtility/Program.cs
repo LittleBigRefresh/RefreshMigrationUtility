@@ -1,9 +1,6 @@
-﻿using Refresh.Database.Models;
-using Refresh.Database.Models.Assets;
-using Refresh.Database.Models.Levels;
-using Refresh.Database.Models.Notifications;
-using Refresh.Database.Models.Users;
+﻿using Refresh.Database.Models.Notifications;
 using RefreshMigrationUtility;
+using RefreshMigrationUtility.Migrations;
 
 MigrationConfig config = new()
 {
@@ -11,7 +8,9 @@ MigrationConfig config = new()
     // PostgresConnectionString = 
 };
 
+#if !DEBUG
 ProgressReporter.PromptForMigrationConsent(config);
+#endif
 
 Console.WriteLine();
 Console.WriteLine("Preparing migration...");
@@ -23,7 +22,8 @@ Console.WriteLine("Setting up migration runner");
 
 MigrationRunner runner = new(config);
 runner.AddSimpleTask<RealmGameAnnouncement, GameAnnouncement>();
-runner.AddSimpleTask<RealmRequestStatistics, RequestStatistics>();
+runner.AddTask<RequestStatisticsMigrator>();
+runner.AddTask<UserMigrator>();
 
 ProgressReporter.Wall("Beginning migration of data! Do not interrupt this process.");
 
