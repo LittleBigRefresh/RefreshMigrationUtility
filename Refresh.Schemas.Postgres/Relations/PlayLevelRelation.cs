@@ -6,9 +6,10 @@ namespace Refresh.Database.Models.Relations;
 
 #nullable disable
 
-[PrimaryKey(nameof(LevelId), nameof(UserId))]
 public partial class PlayLevelRelation
 {
+    [Key] public ObjectId PlayId { get; set; } = ObjectId.GenerateNewId();
+    
     [ForeignKey(nameof(LevelId))]
     public GameLevel Level { get; set; }
     [ForeignKey(nameof(UserId))]
