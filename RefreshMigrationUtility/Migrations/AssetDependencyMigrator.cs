@@ -10,23 +10,20 @@ public class AssetDependencyMigrator : Migrator<RealmAssetDependencyRelation, As
     public AssetDependencyMigrator(RealmDatabaseContext realm, GameDatabaseContext ef) : base(realm, ef)
     {}
 
-    public override void MigrateChunk(RealmDatabaseContext realm, GameDatabaseContext ef)
+    public override void MigrateChunk(MigrationChunk chunk, GameDatabaseContext ef)
     {
         DbSet<AssetDependencyRelation> set = ef.Set<AssetDependencyRelation>();
 
-        IEnumerable<AssetDependencyRelation> chunk = realm.All<RealmAssetDependencyRelation>()
-            .AsEnumerable()
-            .Skip(Progress)
-            .Take(TakeSize)
+        IEnumerable<AssetDependencyRelation> oldItems = ((MigrationChunk<RealmAssetDependencyRelation>)chunk)
+            .Old
             .Select(old =>
             {
-                Migrated++;
-                Progress++;
+                OnMigrate();
                 return Map(ef, old);
             })
             .DistinctBy(x => (x.Dependent, x.Dependency)); // Deduplicate here, after Map()
 
-        foreach (AssetDependencyRelation mapped in chunk)
+        foreach (AssetDependencyRelation mapped in oldItems)
         {
             set.Add(mapped);
         }

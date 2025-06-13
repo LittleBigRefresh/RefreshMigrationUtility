@@ -11,22 +11,19 @@ public class ProfilePinMigrator : UserDependentMigrator<RealmProfilePinRelation,
     public ProfilePinMigrator(RealmDatabaseContext realm, GameDatabaseContext ef) : base(realm, ef)
     {}
     
-    public override void MigrateChunk(RealmDatabaseContext realm, GameDatabaseContext ef)
+    public override void MigrateChunk(MigrationChunk chunk, GameDatabaseContext ef)
     {
         DbSet<ProfilePinRelation> set = ef.Set<ProfilePinRelation>();
 
-        IEnumerable<ProfilePinRelation> chunk = realm.All<RealmProfilePinRelation>()
-            .AsEnumerable()
-            .Skip(Progress)
-            .Take(TakeSize)
+        IEnumerable<ProfilePinRelation> oldItems = ((MigrationChunk<RealmProfilePinRelation>)chunk).Old
             .Select(old =>
             {
-                Progress++;
+                OnMigrate();
                 return Map(ef, old);
             })
             .DistinctBy(x => (x.PinId, x.PublisherId)); // Deduplicate here, after Map()
 
-        foreach (ProfilePinRelation mapped in chunk)
+        foreach (ProfilePinRelation mapped in oldItems)
         {
             set.Add(mapped);
         }

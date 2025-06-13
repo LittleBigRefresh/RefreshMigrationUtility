@@ -11,27 +11,26 @@ public class PlayLevelMigrator : UserAndLevelDependentMigrator<RealmPlayLevelRel
     public PlayLevelMigrator(RealmDatabaseContext realm, GameDatabaseContext ef) : base(realm, ef)
     {}
     
-    public override void MigrateChunk(RealmDatabaseContext realm, GameDatabaseContext ef)
+    public override void MigrateChunk(MigrationChunk chunk, GameDatabaseContext ef)
     {
         DbSet<PlayLevelRelation> set = ef.Set<PlayLevelRelation>();
 
-        IEnumerable<PlayLevelRelation> chunk = realm.All<RealmPlayLevelRelation>()
-            .AsEnumerable()
-            .Skip(Progress)
-            .Take(TakeSize)
+        IEnumerable<PlayLevelRelation> oldItems = ((MigrationChunk<RealmPlayLevelRelation>)chunk).Old
             .Select(old =>
             {
-                Progress++;
-
                 if (old.Level == null || old.User == null)
+                {
+                    OnSkip();
                     return null;
+                }
                 
+                OnMigrate();
                 return Map(ef, old);
             })
             .Where(x => x != null)
             .DistinctBy(x => (x!.LevelId, x!.UserId))!;
 
-        foreach (PlayLevelRelation mapped in chunk)
+        foreach (PlayLevelRelation mapped in oldItems)
         {
             set.Add(mapped);
         }

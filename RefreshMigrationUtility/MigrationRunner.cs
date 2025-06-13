@@ -1,5 +1,6 @@
 ﻿using System.Collections.Concurrent;
 using System.Diagnostics;
+using Microsoft.EntityFrameworkCore.Storage;
 using Realms;
 using Refresh.Database;
 using Refresh.Schema.Realm.Impl;
@@ -26,19 +27,40 @@ public class MigrationRunner
         using RealmDatabaseContext realm = new(this._config.RealmFilePath);
         using GameDatabaseContext ef = new(this._config.PostgresConnectionString);
         
-        while (_taskQueue.TryDequeue(out MigrationTask? task) && !task.Complete)
+        while (!this.Complete)
         {
+            if (!_taskQueue.TryDequeue(out MigrationTask? task))
+            {
+                Thread.Sleep(20);
+                continue;
+            }
+            
+            ef.ChangeTracker.Clear();
+
             Debug.Assert(task != null);
             if (!IsTaskReady(task))
             {
                 _taskQueue.Enqueue(task);
+                Thread.Sleep(20);
                 continue;
             }
             
-            task.MigrateChunk(realm, ef);
-            
-            if(!task.Complete)
-                _taskQueue.Enqueue(task);
+            // remove from queue if complete
+            if(task.Complete)
+                continue;
+
+            MigrationChunk chunk = task.GetChunk(realm);
+            _taskQueue.Enqueue(task); // allow other threads to pick up more chunks
+
+            Interlocked.Increment(ref task.ThreadsAccessing);
+            using (IDbContextTransaction transaction = ef.Database.BeginTransaction())
+            {
+                task.MigrateChunk(chunk, ef);
+                transaction.Commit();
+            }
+            Interlocked.Decrement(ref task.ThreadsAccessing);
+
+            // Debug.Assert(!ef.ChangeTracker.HasChanges());
         }
     }
 
@@ -49,7 +71,6 @@ public class MigrationRunner
         int nproc = Environment.ProcessorCount;
         // nproc = 1;
 
-        // Thread[] threads = new Thread[nproc];
         for (int i = 0; i < nproc; i++)
         {
             Thread thread = new(MigrateLoop)
@@ -57,14 +78,8 @@ public class MigrationRunner
                 Name = $"Migration Thread {i}"
             };
 
-            // threads[i] = thread;
             thread.Start();
         }
-        
-        // foreach (Thread thread in threads)
-        // {
-            // thread.Join();
-        // }
     }
 
     private void AddTask(MigrationTask task)

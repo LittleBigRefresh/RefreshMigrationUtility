@@ -5,12 +5,13 @@ namespace RefreshMigrationUtility;
 
 public abstract class MigrationTask
 {
-    protected const int TakeSize = 4096;
+    protected const int ChunkSize = 4096;
     
-    public abstract void MigrateChunk(RealmDatabaseContext realm, GameDatabaseContext ef);
+    public abstract void MigrateChunk(MigrationChunk chunk, GameDatabaseContext ef);
+    public abstract MigrationChunk GetChunk(RealmDatabaseContext realm);
     public abstract string MigrationType { get; }
 
-    public abstract int Progress { get; set; }
+    public int Progress => Migrated + Skipped;
 
     public abstract int Total { get; set; }
     public abstract int Skipped { get; set; }
@@ -21,7 +22,9 @@ public abstract class MigrationTask
 
     public virtual IEnumerable<Type> NeedsTypes => [];
 
-    public bool Complete => this.Progress >= this.Total;
+    private bool ChangesSaved => ThreadsAccessing == 0;
+    public int ThreadsAccessing;
+    public bool Complete => this.ChangesSaved && this.Progress >= this.Total;
 
     internal static int MaxMigrationTypeLength = 0;
     

@@ -12,10 +12,26 @@ public abstract class Migrator<TOld, TNew> : MigrationTask
     where TNew : class
 {
     public override int Total { get; set; }
-    public override int Progress { get; set; }
 
-    public override int Skipped { get; set; }
-    public override int Migrated { get; set; }
+    public int Index;
+
+    public override int Skipped
+    {
+        get => _skipped;
+        set => _skipped = value;
+    }
+
+    public override int Migrated
+    {
+        get => _migrated;
+        set => _migrated = value;
+    }
+
+    private int _skipped;
+    private int _migrated;
+
+    protected void OnMigrate() => Interlocked.Increment(ref _migrated);
+    protected void OnSkip() => Interlocked.Increment(ref _skipped);
 
     protected Migrator(RealmDatabaseContext realm, GameDatabaseContext ef)
     {
@@ -29,29 +45,37 @@ public abstract class Migrator<TOld, TNew> : MigrationTask
     protected abstract TNew Map(GameDatabaseContext ef, TOld old);
     protected virtual bool IsOldValid(GameDatabaseContext ef, TOld old) => true;
 
-    public override void MigrateChunk(RealmDatabaseContext realm, GameDatabaseContext ef)
-    {
-        IEnumerable<TOld> chunk = realm.All<TOld>()
-            .AsEnumerable()
-            .Skip(Progress)
-            .Take(TakeSize);
+    private readonly Lock _chunkLock = new();
 
+    public override MigrationChunk GetChunk(RealmDatabaseContext realm)
+    {
+        lock (_chunkLock)
+        {
+            TOld[] chunk = realm.All<TOld>()
+                .AsEnumerable()
+                .Skip(Index)
+                .Take(ChunkSize)
+                .ToArray();
+
+            Interlocked.Add(ref Index, chunk.Length);
+            return new MigrationChunk<TOld>(chunk);
+        }
+    }
+
+    public override void MigrateChunk(MigrationChunk chunk, GameDatabaseContext ef)
+    {
+        IEnumerable<TOld> oldObjects = ((MigrationChunk<TOld>)chunk).Old;
         DbSet<TNew> set = ef.Set<TNew>();
 
-        foreach (TOld old in chunk)
+        foreach (TOld old in oldObjects)
         {
             if (IsOldValid(ef, old))
             {
                 TNew mapped = Map(ef, old);
                 set.Add(mapped);
-                Migrated++;
+                OnMigrate();
             }
-            else
-            {
-                Skipped++;
-            }
-
-            Progress++;
+            else OnSkip();
         }
 
         ef.SaveChanges();

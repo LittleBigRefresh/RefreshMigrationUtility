@@ -5,18 +5,20 @@ namespace RefreshMigrationUtility;
 
 public abstract class Backfiller<TSource, TProvides> : MigrationTask, IBackfiller where TSource : class
 {
-    public override void MigrateChunk(RealmDatabaseContext realm, GameDatabaseContext ef)
+    public override MigrationChunk GetChunk(RealmDatabaseContext realm) => MigrationChunk.Empty;
+
+    public override void MigrateChunk(MigrationChunk chunk, GameDatabaseContext ef)
     {
+        _ = chunk;
         TSource[] set = ef.Set<TSource>()
             .Skip(Progress)
-            .Take(TakeSize)
+            .Take(ChunkSize)
             .ToArray(); // need a ToArray here since that would normally cause a double query execution
 
         foreach (TSource src in set)
         {
             if (Backfill(ef, src)) Migrated++;
             else Skipped++;
-            Progress++;
         }
 
         ef.SaveChanges();
@@ -25,7 +27,6 @@ public abstract class Backfiller<TSource, TProvides> : MigrationTask, IBackfille
     protected abstract bool Backfill(GameDatabaseContext ef, TSource src);
 
     public override string MigrationType => $"Backfill {typeof(TProvides).Name} into {typeof(TSource).Name}";
-    public override int Progress { get; set; }
     public override int Total { get; set; }
     public override int Skipped { get; set; }
     public override int Migrated { get; set; }
