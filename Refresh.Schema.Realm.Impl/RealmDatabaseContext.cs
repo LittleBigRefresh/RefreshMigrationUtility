@@ -22,46 +22,6 @@ public class RealmDatabaseContext
 {
     private readonly Realms.Realm _realm;
     
-    public RealmDbSet<RealmGameUser> GameUsers => new(this._realm);
-    public RealmDbSet<RealmToken> Tokens => new(this._realm);
-    public RealmDbSet<RealmGameLevel> GameLevels => new(this._realm);
-    public RealmDbSet<RealmGameProfileComment> GameProfileComments => new(this._realm);
-    public RealmDbSet<RealmGameLevelComment> GameLevelComments => new(this._realm);
-    public RealmDbSet<RealmProfileCommentRelation> ProfileCommentRelations => new(this._realm);
-    public RealmDbSet<RealmLevelCommentRelation> LevelCommentRelations => new(this._realm);
-    public RealmDbSet<RealmFavouriteLevelRelation> FavouriteLevelRelations => new(this._realm);
-    public RealmDbSet<RealmQueueLevelRelation> QueueLevelRelations => new(this._realm);
-    public RealmDbSet<RealmFavouriteUserRelation> FavouriteUserRelations => new(this._realm);
-    public RealmDbSet<RealmPlayLevelRelation> PlayLevelRelations => new(this._realm);
-    public RealmDbSet<RealmUniquePlayLevelRelation> UniquePlayLevelRelations => new(this._realm);
-    public RealmDbSet<RealmRateLevelRelation> RateLevelRelations => new(this._realm);
-    public RealmDbSet<RealmEvent> Events => new(this._realm);
-    public RealmDbSet<RealmGameSubmittedScore> GameSubmittedScores => new(this._realm);
-    public RealmDbSet<RealmGameAsset> GameAssets => new(this._realm);
-    public RealmDbSet<RealmGameNotification> GameNotifications => new(this._realm);
-    public RealmDbSet<RealmGamePhoto> GamePhotos => new(this._realm);
-    public RealmDbSet<RealmGameIpVerificationRequest> GameIpVerificationRequests => new(this._realm);
-    public RealmDbSet<RealmGameAnnouncement> GameAnnouncements => new(this._realm);
-    public RealmDbSet<RealmQueuedRegistration> QueuedRegistrations => new(this._realm);
-    public RealmDbSet<RealmEmailVerificationCode> EmailVerificationCodes => new(this._realm);
-    public RealmDbSet<RealmRequestStatistics> RequestStatistics => new(this._realm);
-    public RealmDbSet<RealmSequentialIdStorage> SequentialIdStorage => new(this._realm);
-    public RealmDbSet<RealmGameContest> GameContests => new(this._realm);
-    public RealmDbSet<RealmAssetDependencyRelation> AssetDependencyRelations => new(this._realm);
-    public RealmDbSet<RealmGameReview> GameReviews => new(this._realm);
-    public RealmDbSet<RealmDisallowedUser> DisallowedUsers => new(this._realm);
-    public RealmDbSet<RealmRateReviewRelation> RateReviewRelations => new(this._realm);
-    public RealmDbSet<RealmTagLevelRelation> TagLevelRelations => new(this._realm);
-    public RealmDbSet<RealmGamePlaylist> GamePlaylists => new(this._realm);
-    public RealmDbSet<RealmLevelPlaylistRelation> LevelPlaylistRelations => new(this._realm);
-    public RealmDbSet<RealmSubPlaylistRelation> SubPlaylistRelations => new(this._realm);
-    public RealmDbSet<RealmFavouritePlaylistRelation> FavouritePlaylistRelations => new(this._realm);
-    public RealmDbSet<RealmGameUserVerifiedIpRelation> GameUserVerifiedIpRelations => new(this._realm);
-    public RealmDbSet<RealmGameChallenge> GameChallenges => new(this._realm);
-    public RealmDbSet<RealmGameChallengeScore> GameChallengeScores => new(this._realm);
-    public RealmDbSet<RealmPinProgressRelation> PinProgressRelations => new(this._realm);
-    public RealmDbSet<RealmProfilePinRelation> ProfilePinRelations => new(this._realm);
-    
     private List<Type> SchemaTypes { get; } =
     [
         typeof(RealmRequestStatistics),
@@ -133,6 +93,11 @@ public class RealmDatabaseContext
             ShouldDeleteIfMigrationNeeded = false,
             Schema = SchemaTypes,
         });
+    }
+
+    public IQueryable<T> All<T>() where T : IRealmObject
+    {
+        return _realm.All<T>();
     }
 
     // private static void FailMigration(Migration migration, ulong oldSchemaVersion)
