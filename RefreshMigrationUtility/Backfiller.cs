@@ -23,7 +23,7 @@ public abstract class Backfiller<TSource, TProvides> : MigrationTask, IBackfille
 
     protected abstract void Backfill(GameDatabaseContext ef, TSource src);
 
-    public override string MigrationType => $"{typeof(TSource).Name} <- {typeof(TProvides).Name}";
+    public override string MigrationType => $"Backfill {typeof(TProvides).Name} into {typeof(TSource).Name}";
     public override int Progress { get; set; }
     protected internal override int Total { get; set; }
 

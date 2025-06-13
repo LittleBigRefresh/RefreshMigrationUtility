@@ -44,6 +44,8 @@ public class MigrationRunner
 
     public void StartAllTasks()
     {
+        MigrationTask.MaxMigrationTypeLength = _tasks.Select(t => t.MigrationType.Length).Max();
+        
         int nproc = Environment.ProcessorCount;
         // nproc = 1;
 

@@ -19,9 +19,12 @@ public abstract class MigrationTask
     public virtual IEnumerable<Type> NeedsTypes => [];
 
     public bool Complete => this.Progress >= this.Total;
+
+    internal static int MaxMigrationTypeLength = 0;
     
     public override string ToString()
     {
-        return $"{MigrationType} ({this.Progress}/{this.Total})";
+        string progress = Complete ? $"{this.Total:N0} migrated" : $"{this.Total - this.Progress:N0} migrating...";
+        return $"{MigrationType.PadRight(MaxMigrationTypeLength + 1)}({progress})";
     }
 }

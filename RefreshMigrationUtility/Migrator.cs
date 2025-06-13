@@ -44,7 +44,7 @@ public abstract class Migrator<TOld, TNew> : MigrationTask
         ef.SaveChanges();
     }
 
-    public override string MigrationType { get; } = $"{typeof(TOld).Name}->{typeof(TNew).Name}";
+    public override string MigrationType { get; } = $"Migrate {typeof(TNew).Name}{(typeof(TNew).Name.EndsWith('s') ? "" : "s")} from Realm";
     
     public override Type SourceType => typeof(TOld);
     public override Type ProvidesType => typeof(TNew);

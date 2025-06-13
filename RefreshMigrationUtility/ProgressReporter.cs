@@ -67,7 +67,10 @@ public static class ProgressReporter
         {
             Console.Clear();
             Console.ForegroundColor = ConsoleColor.White;
-            Console.WriteLine("Migration Status");
+            Console.Write("Migrating Refresh from Realm to Postgres - ");
+            Console.ForegroundColor = ConsoleColor.Red;
+            Console.WriteLine("do not interrupt!");
+            Console.ForegroundColor = ConsoleColor.White;
             Console.WriteLine("Running for " + sw.Elapsed);
             Console.WriteLine();
             
@@ -75,6 +78,7 @@ public static class ProgressReporter
             Console.WriteLine("Complete tasks:");
             foreach (MigrationTask task in runner.Tasks.Where(t => t.Complete))
             {
+                Console.Write('\t');
                 Console.WriteLine(task.ToString());
             }
         
@@ -83,6 +87,7 @@ public static class ProgressReporter
             Console.WriteLine("In progress:");
             foreach (MigrationTask task in runner.Tasks.Where(t => !t.Complete && t.Progress > 0))
             {
+                Console.Write('\t');
                 Console.WriteLine(task.ToString());
             }
             
@@ -91,6 +96,7 @@ public static class ProgressReporter
             Console.WriteLine("Not started:");
             foreach (MigrationTask task in runner.Tasks.Where(t => !t.Complete && t.Progress <= 0))
             {
+                Console.Write('\t');
                 Console.WriteLine(task.ToString());
             }
             
