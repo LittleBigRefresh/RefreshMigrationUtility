@@ -1,10 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
-using Refresh.Database;
-using Refresh.Database.Models.Levels;
-using Refresh.Database.Models.Notifications;
-using Refresh.Schema.Realm.Impl;
+﻿using Refresh.Database.Models.Notifications;
 using RefreshMigrationUtility;
-using RefreshMigrationUtility.Migrations;
 
 MigrationConfig config = new()
 {
@@ -15,30 +10,18 @@ MigrationConfig config = new()
 ProgressReporter.PromptForMigrationConsent(config);
 
 Console.WriteLine();
-Console.WriteLine("Beginning migration! Do not interrupt.");
+Console.WriteLine("Preparing migration...");
 
-Console.WriteLine("Connecting to Postgres...");
+ProgressReporter.TestDatabases(config);
 
-GameDatabaseContext postgres = new();
-Console.WriteLine("\tWiping database...");
-postgres.Database.EnsureDeleted();
-Console.WriteLine("\tMigrating database...");
-postgres.Database.Migrate();
-Console.WriteLine("\tTesting Postgres...");
-_ = postgres.Set<GameLevel>().Count();
-Console.WriteLine("Postgres OK");
-
-Console.WriteLine("Connecting to Realm...");
-RealmDatabaseContext realm = new(config.RealmFilePath);
-Console.WriteLine("\tTesting Realm...");
-_ = realm.All<RealmGameLevel>().Count();
-Console.WriteLine("Realm OK");
-
-ProgressReporter.Wall("Both databases opened successfully!");
-
+Console.WriteLine("Both databases connected successfully!");
 Console.WriteLine("Setting up migration runner");
 
-SimpleMigrationTask<RealmGameAnnouncement, GameAnnouncement> migration = new(realm, postgres);
-migration.MigrateChunk();
+MigrationRunner runner = new(config);
+runner.AddSimpleTask<RealmGameAnnouncement, GameAnnouncement>();
+
+ProgressReporter.Wall("Beginning migration of data! Do not interrupt this process.");
+
+runner.RunAllTasks();
 
 ProgressReporter.Wall("Migration has successfully completed!");

@@ -1,4 +1,9 @@
-﻿namespace RefreshMigrationUtility;
+﻿using Microsoft.EntityFrameworkCore;
+using Refresh.Database;
+using Refresh.Database.Models.Levels;
+using Refresh.Schema.Realm.Impl;
+
+namespace RefreshMigrationUtility;
 
 public static class ProgressReporter
 {
@@ -33,5 +38,24 @@ public static class ProgressReporter
         Console.WriteLine(dashes);
         Console.WriteLine();
         Console.ResetColor();
+    }
+
+    public static void TestDatabases(MigrationConfig config)
+    {
+        Console.WriteLine("Connecting to Postgres...");
+        using GameDatabaseContext postgres = new(config.PostgresConnectionString);
+        Console.WriteLine("\tWiping database...");
+        postgres.Database.EnsureDeleted();
+        Console.WriteLine("\tMigrating database...");
+        postgres.Database.Migrate();
+        Console.WriteLine("\tTesting Postgres...");
+        _ = postgres.Set<GameLevel>().Count();
+        Console.WriteLine("Postgres OK");
+
+        Console.WriteLine("Connecting to Realm...");
+        using RealmDatabaseContext realm = new(config.RealmFilePath);
+        Console.WriteLine("\tTesting Realm...");
+        _ = realm.All<RealmGameLevel>().Count();
+        Console.WriteLine("Realm OK");
     }
 }

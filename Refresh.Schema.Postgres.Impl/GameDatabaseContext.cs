@@ -61,19 +61,17 @@ public partial class GameDatabaseContext : DbContext
     internal DbSet<GameChallengeScore> GameChallengeScores { get; set; }
     internal DbSet<PinProgressRelation> PinProgressRelations { get; set; }
     internal DbSet<ProfilePinRelation> ProfilePinRelations { get; set; }
-    
+
+    private readonly string _connectionString;
+
+    public GameDatabaseContext(string connectionString)
+    {
+        _connectionString = connectionString;
+    }
+
     protected override void OnConfiguring(DbContextOptionsBuilder options)
     {
-        base.OnConfiguring(options);
-        NpgsqlConnectionStringBuilder builder = new()
-        {
-            Database = "refresh",
-            Username = "refresh",
-            Password = "refresh",
-            Host = "localhost",
-            Port = 5432,
-        };
-        options.UseNpgsql(builder.ToString());
+        options.UseNpgsql(_connectionString);
     }
 
     protected override void ConfigureConventions(ModelConfigurationBuilder config)

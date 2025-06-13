@@ -18,7 +18,7 @@ using Refresh.Database.Models.Users;
 
 namespace Refresh.Schema.Realm.Impl;
 
-public class RealmDatabaseContext
+public class RealmDatabaseContext : IDisposable
 {
     private readonly Realms.Realm _realm;
     
@@ -105,4 +105,9 @@ public class RealmDatabaseContext
     //     throw new InvalidOperationException($"The realm database must be version {LatestRealmSchemaVersion}, not {oldSchemaVersion}." +
     //                                         $"Please upgrade your instance of Refresh to the latest v2 version.");
     // }
+
+    public void Dispose()
+    {
+        _realm.Dispose();
+    }
 }

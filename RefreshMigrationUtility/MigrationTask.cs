@@ -5,22 +5,16 @@ using Refresh.Schema.Realm.Impl;
 
 namespace RefreshMigrationUtility;
 
-public abstract class MigrationTask<TOld, TNew>
+public abstract class MigrationTask<TOld, TNew> : MigrationTask
     where TOld : IRealmObject
     where TNew : class
 {
-    private readonly RealmDatabaseContext _realm;
-    private readonly GameDatabaseContext _ef;
+    protected override int Total { get; set; }
+    protected override int Progress { get; set; }
 
-    private readonly int _total;
-    private int _progress;
-
-    public MigrationTask(RealmDatabaseContext realm, GameDatabaseContext ef)
+    protected MigrationTask(RealmDatabaseContext realm, GameDatabaseContext ef)
     {
-        this._realm = realm;
-        this._ef = ef;
-
-        this._total = realm.All<TOld>().Count();
+        this.Total = realm.All<TOld>().Count();
         if (ef.Set<TNew>().Any())
         {
             throw new InvalidOperationException($"Cannot start migration for {MigrationType} because the new database already has objects");
@@ -29,30 +23,41 @@ public abstract class MigrationTask<TOld, TNew>
 
     public abstract TNew Map(TOld old);
 
-    public void MigrateChunk()
+    public override void MigrateChunk(RealmDatabaseContext realm, GameDatabaseContext ef)
     {
-        IEnumerable<TOld> chunk = this._realm.All<TOld>()
+        IEnumerable<TOld> chunk = realm.All<TOld>()
             .AsEnumerable()
-            .Skip(_progress)
+            .Skip(Progress)
             .Take(100)
             .ToArray();
 
-        DbSet<TNew> set = this._ef.Set<TNew>();
+        DbSet<TNew> set = ef.Set<TNew>();
 
         foreach (TOld old in chunk)
         {
             TNew mapped = Map(old);
             set.Add(mapped);
-            _progress++;
+            Progress++;
         }
 
-        this._ef.SaveChanges();
+        ef.SaveChanges();
     }
 
-    private static string MigrationType => $"{typeof(TOld).Name}->{typeof(TNew).Name}";
+    public override string MigrationType => $"{typeof(TOld).Name}->{typeof(TNew).Name}";
+}
 
+public abstract class MigrationTask
+{
+    public abstract void MigrateChunk(RealmDatabaseContext realm, GameDatabaseContext ef);
+    public abstract string MigrationType { get; }
+
+    protected abstract int Progress { get; set; }
+    protected abstract int Total { get; set; }
+
+    public bool Complete => this.Progress >= this.Total;
+    
     public override string ToString()
     {
-        return $"{MigrationType} ({this._progress}/{this._total})";
+        return $"{MigrationType} ({this.Progress}/{this.Total})";
     }
 }
