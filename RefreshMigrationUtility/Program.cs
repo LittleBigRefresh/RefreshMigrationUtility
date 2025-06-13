@@ -34,6 +34,7 @@ runner.AddMigrator<PlaylistMigrator>();
 runner.AddMigrator<NotificationMigrator>();
 runner.AddMigrator<AssetMigrator>();
 runner.AddMigrator<EventMigrator>();
+runner.AddMigrator<AssetDependencyMigrator>();
 
 runner.AddBackfiller<UserRootPlaylistBackfiller>();
 

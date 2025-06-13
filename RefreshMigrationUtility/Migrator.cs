@@ -30,8 +30,7 @@ public abstract class Migrator<TOld, TNew> : MigrationTask
         IEnumerable<TOld> chunk = realm.All<TOld>()
             .AsEnumerable()
             .Skip(Progress)
-            .Take(TakeSize)
-            .ToArray();
+            .Take(TakeSize);
 
         DbSet<TNew> set = ef.Set<TNew>();
 

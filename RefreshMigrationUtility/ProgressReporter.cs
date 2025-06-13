@@ -58,4 +58,9 @@ public static class ProgressReporter
         _ = realm.All<RealmGameLevel>().Count();
         Console.WriteLine("Realm OK");
     }
+
+    public static void ReportProgress(MigrationRunner runner)
+    {
+        
+    }
 }
