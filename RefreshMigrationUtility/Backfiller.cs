@@ -14,18 +14,21 @@ public abstract class Backfiller<TSource, TProvides> : MigrationTask, IBackfille
 
         foreach (TSource src in set)
         {
-            Backfill(ef, src);
+            if (Backfill(ef, src)) Migrated++;
+            else Skipped++;
             Progress++;
         }
 
         ef.SaveChanges();
     }
 
-    protected abstract void Backfill(GameDatabaseContext ef, TSource src);
+    protected abstract bool Backfill(GameDatabaseContext ef, TSource src);
 
     public override string MigrationType => $"Backfill {typeof(TProvides).Name} into {typeof(TSource).Name}";
     public override int Progress { get; set; }
-    protected internal override int Total { get; set; }
+    public override int Total { get; set; }
+    public override int Skipped { get; set; }
+    public override int Migrated { get; set; }
 
     public override Type SourceType => typeof(TSource);
     public override Type ProvidesType => typeof(TProvides);

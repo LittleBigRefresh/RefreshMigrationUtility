@@ -35,7 +35,7 @@ public class RateLevelMigrator : UserAndLevelDependentMigrator<RealmRateLevelRel
         ef.SaveChanges();
     }
 
-    public override RateLevelRelation Map(GameDatabaseContext ef, RealmRateLevelRelation old)
+    protected override RateLevelRelation Map(GameDatabaseContext ef, RealmRateLevelRelation old)
     {
         return new RateLevelRelation()
         {

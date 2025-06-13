@@ -10,7 +10,7 @@ public class ScoreMigrator : UserAndLevelDependentMigrator<RealmGameSubmittedSco
     public ScoreMigrator(RealmDatabaseContext realm, GameDatabaseContext ef) : base(realm, ef)
     {}
 
-    public override GameSubmittedScore Map(GameDatabaseContext ef, RealmGameSubmittedScore old)
+    protected override GameSubmittedScore Map(GameDatabaseContext ef, RealmGameSubmittedScore old)
     {
         return new GameSubmittedScore
         {

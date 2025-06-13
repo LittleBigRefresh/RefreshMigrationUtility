@@ -36,7 +36,7 @@ public class UniquePlayLevelMigrator : UserAndLevelDependentMigrator<RealmUnique
         ef.SaveChanges();
     }
 
-    public override UniquePlayLevelRelation Map(GameDatabaseContext ef, RealmUniquePlayLevelRelation old)
+    protected override UniquePlayLevelRelation Map(GameDatabaseContext ef, RealmUniquePlayLevelRelation old)
     {
         return new UniquePlayLevelRelation
         {

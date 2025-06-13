@@ -33,7 +33,7 @@ public class AssetDependencyMigrator : Migrator<RealmAssetDependencyRelation, As
         ef.SaveChanges();
     }
 
-    public override AssetDependencyRelation Map(GameDatabaseContext ef, RealmAssetDependencyRelation old)
+    protected override AssetDependencyRelation Map(GameDatabaseContext ef, RealmAssetDependencyRelation old)
     {
         return new AssetDependencyRelation
         {

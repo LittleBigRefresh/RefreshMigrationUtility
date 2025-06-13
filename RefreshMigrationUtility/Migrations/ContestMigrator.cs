@@ -10,7 +10,7 @@ public class ContestMigrator : UserAndLevelDependentMigrator<RealmGameContest, G
     public ContestMigrator(RealmDatabaseContext realm, GameDatabaseContext ef) : base(realm, ef)
     {}
 
-    public override GameContest Map(GameDatabaseContext ef, RealmGameContest old)
+    protected override GameContest Map(GameDatabaseContext ef, RealmGameContest old)
     {
         return new GameContest
         {

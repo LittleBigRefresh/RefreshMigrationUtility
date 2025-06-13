@@ -9,7 +9,7 @@ public class RequestStatisticsMigrator : Migrator<RealmRequestStatistics, Reques
     public RequestStatisticsMigrator(RealmDatabaseContext realm, GameDatabaseContext ef) : base(realm, ef)
     {}
 
-    public override RequestStatistics Map(GameDatabaseContext ef, RealmRequestStatistics old)
+    protected override RequestStatistics Map(GameDatabaseContext ef, RealmRequestStatistics old)
     {
         return new RequestStatistics
         {

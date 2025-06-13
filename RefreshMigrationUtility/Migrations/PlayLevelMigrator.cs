@@ -39,7 +39,7 @@ public class PlayLevelMigrator : UserAndLevelDependentMigrator<RealmPlayLevelRel
         ef.SaveChanges();
     }
 
-    public override PlayLevelRelation Map(GameDatabaseContext ef, RealmPlayLevelRelation old)
+    protected override PlayLevelRelation Map(GameDatabaseContext ef, RealmPlayLevelRelation old)
     {
         return new PlayLevelRelation
         {

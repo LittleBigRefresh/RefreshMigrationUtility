@@ -10,7 +10,7 @@ public class ChallengeScoreMigrator : Migrator<RealmGameChallengeScore, GameChal
     public ChallengeScoreMigrator(RealmDatabaseContext realm, GameDatabaseContext ef) : base(realm, ef)
     {}
 
-    public override GameChallengeScore Map(GameDatabaseContext ef, RealmGameChallengeScore old)
+    protected override GameChallengeScore Map(GameDatabaseContext ef, RealmGameChallengeScore old)
     {
         return new GameChallengeScore
         {

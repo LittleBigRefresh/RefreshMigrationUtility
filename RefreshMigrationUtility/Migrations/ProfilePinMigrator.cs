@@ -34,7 +34,7 @@ public class ProfilePinMigrator : UserDependentMigrator<RealmProfilePinRelation,
         ef.SaveChanges();
     }
 
-    public override ProfilePinRelation Map(GameDatabaseContext ef, RealmProfilePinRelation old)
+    protected override ProfilePinRelation Map(GameDatabaseContext ef, RealmProfilePinRelation old)
     {
         return new ProfilePinRelation()
         {

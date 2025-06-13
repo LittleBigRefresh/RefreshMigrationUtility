@@ -11,7 +11,7 @@ public class FavouritePlaylistMigrator : Migrator<RealmFavouritePlaylistRelation
     public FavouritePlaylistMigrator(RealmDatabaseContext realm, GameDatabaseContext ef) : base(realm, ef)
     {}
 
-    public override FavouritePlaylistRelation Map(GameDatabaseContext ef, RealmFavouritePlaylistRelation old)
+    protected override FavouritePlaylistRelation Map(GameDatabaseContext ef, RealmFavouritePlaylistRelation old)
     {
         return new FavouritePlaylistRelation
         {

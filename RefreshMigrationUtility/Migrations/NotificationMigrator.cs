@@ -10,7 +10,7 @@ public class NotificationMigrator : UserDependentMigrator<RealmGameNotification,
     public NotificationMigrator(RealmDatabaseContext realm, GameDatabaseContext ef) : base(realm, ef)
     {}
 
-    public override GameNotification Map(GameDatabaseContext ef, RealmGameNotification old)
+    protected override GameNotification Map(GameDatabaseContext ef, RealmGameNotification old)
     {
         return new GameNotification
         {

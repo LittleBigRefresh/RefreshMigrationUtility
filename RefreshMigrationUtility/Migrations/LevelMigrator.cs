@@ -10,7 +10,7 @@ public class LevelMigrator : UserDependentMigrator<RealmGameLevel, GameLevel>
     public LevelMigrator(RealmDatabaseContext realm, GameDatabaseContext ef) : base(realm, ef)
     {}
 
-    public override GameLevel Map(GameDatabaseContext ef, RealmGameLevel old)
+    protected override GameLevel Map(GameDatabaseContext ef, RealmGameLevel old)
     {
         return new GameLevel
         {

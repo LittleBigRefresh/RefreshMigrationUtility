@@ -10,7 +10,7 @@ public class PlaylistMigrator : UserDependentMigrator<RealmGamePlaylist, GamePla
     public PlaylistMigrator(RealmDatabaseContext realm, GameDatabaseContext ef) : base(realm, ef)
     {}
 
-    public override GamePlaylist Map(GameDatabaseContext ef, RealmGamePlaylist old)
+    protected override GamePlaylist Map(GameDatabaseContext ef, RealmGamePlaylist old)
     {
         return new GamePlaylist()
         {

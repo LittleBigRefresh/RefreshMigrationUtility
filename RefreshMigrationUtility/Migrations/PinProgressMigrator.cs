@@ -10,7 +10,7 @@ public class PinProgressMigrator : UserDependentMigrator<RealmPinProgressRelatio
     public PinProgressMigrator(RealmDatabaseContext realm, GameDatabaseContext ef) : base(realm, ef)
     {}
 
-    public override PinProgressRelation Map(GameDatabaseContext ef, RealmPinProgressRelation old)
+    protected override PinProgressRelation Map(GameDatabaseContext ef, RealmPinProgressRelation old)
     {
         return new PinProgressRelation()
         {

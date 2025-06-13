@@ -36,7 +36,7 @@ public class LevelPlaylistMigrator : Migrator<RealmLevelPlaylistRelation, LevelP
         ef.SaveChanges();
     }
 
-    public override LevelPlaylistRelation Map(GameDatabaseContext ef, RealmLevelPlaylistRelation old)
+    protected override LevelPlaylistRelation Map(GameDatabaseContext ef, RealmLevelPlaylistRelation old)
     {
         return new LevelPlaylistRelation()
         {

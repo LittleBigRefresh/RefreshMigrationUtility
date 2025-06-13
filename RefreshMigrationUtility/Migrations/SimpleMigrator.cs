@@ -42,7 +42,7 @@ public class SimpleMigrator<TOld, TNew> : Migrator<TOld, TNew> where TNew : clas
 
     private readonly FrozenDictionary<PropertyInfo, PropertyInfo> _newToOld;
 
-    public override TNew Map(GameDatabaseContext ef, TOld old)
+    protected override TNew Map(GameDatabaseContext ef, TOld old)
     {
         TNew mapped = new();
         foreach (PropertyInfo newInfo in _newProperties)

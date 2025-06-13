@@ -35,7 +35,7 @@ public class LevelCommentMigrator : UserAndLevelDependentMigrator<RealmGameLevel
         ef.SaveChanges();
     }
 
-    public override GameLevelComment Map(GameDatabaseContext ef, RealmGameLevelComment old)
+    protected override GameLevelComment Map(GameDatabaseContext ef, RealmGameLevelComment old)
     {
         return new GameLevelComment
         {

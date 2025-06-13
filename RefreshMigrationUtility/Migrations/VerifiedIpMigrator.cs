@@ -35,7 +35,7 @@ public class VerifiedIpMigrator : UserDependentMigrator<RealmGameUserVerifiedIpR
         ef.SaveChanges();
     }
 
-    public override GameUserVerifiedIpRelation Map(GameDatabaseContext ef, RealmGameUserVerifiedIpRelation old)
+    protected override GameUserVerifiedIpRelation Map(GameDatabaseContext ef, RealmGameUserVerifiedIpRelation old)
     {
         return new GameUserVerifiedIpRelation
         {

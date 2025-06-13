@@ -10,7 +10,7 @@ public class ChallengeMigrator : UserAndLevelDependentMigrator<RealmGameChalleng
     public ChallengeMigrator(RealmDatabaseContext realm, GameDatabaseContext ef) : base(realm, ef)
     {}
 
-    public override GameChallenge Map(GameDatabaseContext ef, RealmGameChallenge old)
+    protected override GameChallenge Map(GameDatabaseContext ef, RealmGameChallenge old)
     {
         return new GameChallenge
         {

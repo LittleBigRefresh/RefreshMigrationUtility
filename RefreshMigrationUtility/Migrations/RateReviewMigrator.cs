@@ -38,7 +38,7 @@ public class RateReviewMigrator : Migrator<RealmRateReviewRelation, RateReviewRe
         ef.SaveChanges();
     }
 
-    public override RateReviewRelation Map(GameDatabaseContext ef, RealmRateReviewRelation old)
+    protected override RateReviewRelation Map(GameDatabaseContext ef, RealmRateReviewRelation old)
     {
         return new RateReviewRelation
         {

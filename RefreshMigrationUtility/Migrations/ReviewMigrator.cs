@@ -10,7 +10,7 @@ public class ReviewMigrator : UserAndLevelDependentMigrator<RealmGameReview, Gam
     public ReviewMigrator(RealmDatabaseContext realm, GameDatabaseContext ef) : base(realm, ef)
     {}
 
-    public override GameReview Map(GameDatabaseContext ef, RealmGameReview old)
+    protected override GameReview Map(GameDatabaseContext ef, RealmGameReview old)
     {
         return new GameReview
         {

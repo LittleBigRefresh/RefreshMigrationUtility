@@ -35,7 +35,7 @@ public class FavouriteUserMigrator : UserDependentMigrator<RealmFavouriteUserRel
         ef.SaveChanges();
     }
 
-    public override FavouriteUserRelation Map(GameDatabaseContext ef, RealmFavouriteUserRelation old)
+    protected override FavouriteUserRelation Map(GameDatabaseContext ef, RealmFavouriteUserRelation old)
     {
         return new FavouriteUserRelation
         {

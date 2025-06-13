@@ -10,7 +10,7 @@ public class AssetMigrator : UserDependentMigrator<RealmGameAsset, GameAsset>
     public AssetMigrator(RealmDatabaseContext realm, GameDatabaseContext ef) : base(realm, ef)
     {}
 
-    public override GameAsset Map(GameDatabaseContext ef, RealmGameAsset old)
+    protected override GameAsset Map(GameDatabaseContext ef, RealmGameAsset old)
     {
         return new GameAsset()
         {

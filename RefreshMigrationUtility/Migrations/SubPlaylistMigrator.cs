@@ -36,7 +36,7 @@ public class SubPlaylistMigrator : Migrator<RealmSubPlaylistRelation, SubPlaylis
         ef.SaveChanges();
     }
 
-    public override SubPlaylistRelation Map(GameDatabaseContext ef, RealmSubPlaylistRelation old)
+    protected override SubPlaylistRelation Map(GameDatabaseContext ef, RealmSubPlaylistRelation old)
     {
         return new SubPlaylistRelation
         {

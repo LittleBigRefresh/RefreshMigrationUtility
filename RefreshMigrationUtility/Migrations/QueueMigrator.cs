@@ -10,7 +10,7 @@ public class QueueMigrator : UserAndLevelDependentMigrator<RealmQueueLevelRelati
     public QueueMigrator(RealmDatabaseContext realm, GameDatabaseContext ef) : base(realm, ef)
     {}
 
-    public override QueueLevelRelation Map(GameDatabaseContext ef, RealmQueueLevelRelation old)
+    protected override QueueLevelRelation Map(GameDatabaseContext ef, RealmQueueLevelRelation old)
     {
         return new QueueLevelRelation
         {

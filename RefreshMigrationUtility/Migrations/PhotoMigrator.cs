@@ -12,7 +12,7 @@ public class PhotoMigrator : Migrator<RealmGamePhoto, GamePhoto>
     public PhotoMigrator(RealmDatabaseContext realm, GameDatabaseContext ef) : base(realm, ef)
     {}
 
-    public override GamePhoto Map(GameDatabaseContext ef, RealmGamePhoto old)
+    protected override GamePhoto Map(GameDatabaseContext ef, RealmGamePhoto old)
     {
         return new GamePhoto()
         {

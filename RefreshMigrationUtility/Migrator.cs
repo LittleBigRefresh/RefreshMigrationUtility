@@ -11,8 +11,11 @@ public abstract class Migrator<TOld, TNew> : MigrationTask
     where TOld : IRealmObject
     where TNew : class
 {
-    protected internal override int Total { get; set; }
+    public override int Total { get; set; }
     public override int Progress { get; set; }
+
+    public override int Skipped { get; set; }
+    public override int Migrated { get; set; }
 
     protected Migrator(RealmDatabaseContext realm, GameDatabaseContext ef)
     {
@@ -23,7 +26,8 @@ public abstract class Migrator<TOld, TNew> : MigrationTask
         }
     }
 
-    public abstract TNew Map(GameDatabaseContext ef, TOld old);
+    protected abstract TNew Map(GameDatabaseContext ef, TOld old);
+    protected virtual bool IsOldValid(GameDatabaseContext ef, TOld old) => true;
 
     public override void MigrateChunk(RealmDatabaseContext realm, GameDatabaseContext ef)
     {
@@ -36,8 +40,17 @@ public abstract class Migrator<TOld, TNew> : MigrationTask
 
         foreach (TOld old in chunk)
         {
-            TNew mapped = Map(ef, old);
-            set.Add(mapped);
+            if (IsOldValid(ef, old))
+            {
+                TNew mapped = Map(ef, old);
+                set.Add(mapped);
+                Migrated++;
+            }
+            else
+            {
+                Skipped++;
+            }
+
             Progress++;
         }
 

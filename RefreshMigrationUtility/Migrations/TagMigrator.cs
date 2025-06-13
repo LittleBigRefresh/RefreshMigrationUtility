@@ -10,7 +10,7 @@ public class TagMigrator : UserAndLevelDependentMigrator<RealmTagLevelRelation, 
     public TagMigrator(RealmDatabaseContext realm, GameDatabaseContext ef) : base(realm, ef)
     {}
 
-    public override TagLevelRelation Map(GameDatabaseContext ef, RealmTagLevelRelation old)
+    protected override TagLevelRelation Map(GameDatabaseContext ef, RealmTagLevelRelation old)
     {
         return new TagLevelRelation
         {

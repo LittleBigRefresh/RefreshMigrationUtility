@@ -6,10 +6,11 @@ namespace RefreshMigrationUtility.Migrations.Backfillers;
 
 public class UserRootPlaylistBackfiller : Backfiller<GameUser, GamePlaylist>
 {
-    protected override void Backfill(GameDatabaseContext ef, GameUser src)
+    protected override bool Backfill(GameDatabaseContext ef, GameUser src)
     {
         GamePlaylist? playlist = ef.GamePlaylists.FirstOrDefault(p => p.IsRoot && p.Publisher == src);
         src.RootPlaylist = playlist;
+        return playlist != null;
     }
 
     public override IEnumerable<Type> NeedsTypes { get; } = [typeof(GameUser), typeof(GamePlaylist)];

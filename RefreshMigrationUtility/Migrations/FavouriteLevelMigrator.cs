@@ -10,7 +10,7 @@ public class FavouriteLevelMigrator : UserAndLevelDependentMigrator<RealmFavouri
     public FavouriteLevelMigrator(RealmDatabaseContext realm, GameDatabaseContext ef) : base(realm, ef)
     {}
 
-    public override FavouriteLevelRelation Map(GameDatabaseContext ef, RealmFavouriteLevelRelation old)
+    protected override FavouriteLevelRelation Map(GameDatabaseContext ef, RealmFavouriteLevelRelation old)
     {
         return new FavouriteLevelRelation()
         {

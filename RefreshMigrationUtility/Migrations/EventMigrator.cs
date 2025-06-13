@@ -10,7 +10,7 @@ public class EventMigrator : UserDependentMigrator<RealmEvent, Event>
     public EventMigrator(RealmDatabaseContext realm, GameDatabaseContext ef) : base(realm, ef)
     {}
 
-    public override Event Map(GameDatabaseContext ef, RealmEvent old)
+    protected override Event Map(GameDatabaseContext ef, RealmEvent old)
     {
         return new Event
         {

@@ -10,7 +10,7 @@ public class ProfileCommentMigrator : UserDependentMigrator<RealmGameProfileComm
     public ProfileCommentMigrator(RealmDatabaseContext realm, GameDatabaseContext ef) : base(realm, ef)
     {}
 
-    public override GameProfileComment Map(GameDatabaseContext ef, RealmGameProfileComment old)
+    protected override GameProfileComment Map(GameDatabaseContext ef, RealmGameProfileComment old)
     {
         return new GameProfileComment
         {
