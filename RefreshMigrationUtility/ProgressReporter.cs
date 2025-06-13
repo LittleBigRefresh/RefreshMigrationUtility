@@ -101,7 +101,7 @@ public static class ProgressReporter
             }
             
             Console.ResetColor();
-            Thread.Sleep(20);
+            Thread.Sleep(500);
         }
         
         Console.WriteLine();
