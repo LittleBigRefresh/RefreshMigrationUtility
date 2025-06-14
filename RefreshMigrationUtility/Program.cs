@@ -60,6 +60,7 @@ runner.AddMigrator<RateReviewMigrator>();
 runner.AddMigrator<SubPlaylistMigrator>();
 runner.AddMigrator<TagMigrator>();
 runner.AddMigrator<UniquePlayLevelMigrator>();
+runner.AddMigrator<SkillRewardMigrator>();
 
 runner.AddBackfiller<UserRootPlaylistBackfiller>();
 
