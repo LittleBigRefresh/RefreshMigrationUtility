@@ -5,8 +5,17 @@
         <TargetFramework>net9.0</TargetFramework>
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
-        <ServerGarbageCollection>true</ServerGarbageCollection>
     </PropertyGroup>
+    
+    <PropertyGroup>
+        <ServerGarbageCollection>true</ServerGarbageCollection>
+        <RetainVMGarbageCollection>true</RetainVMGarbageCollection>
+    </PropertyGroup>
+    
+    <ItemGroup>
+        <RuntimeHostConfigurationOption Include="System.GC.HeapHardLimitPercent" Value="90"/>
+        <RuntimeHostConfigurationOption Include="System.GC.HeapHardLimit" Value="8589934592"/>
+    </ItemGroup>
 
     <ItemGroup>
       <ProjectReference Include="..\Refresh.Common\Refresh.Common.csproj" />

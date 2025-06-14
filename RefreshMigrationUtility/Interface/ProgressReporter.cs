@@ -29,6 +29,16 @@ public static class ProgressReporter
         }
     }
 
+    public static void Warn(string str)
+    {
+        Console.ForegroundColor = ConsoleColor.Yellow;
+        Wall(str);
+        Console.ResetColor();
+
+        Console.WriteLine("Press any key to continue...");
+        Console.ReadKey(true);
+    }
+
     public static void Wall(string str)
     {
         string dashes = new string('-', str.Length + 2);

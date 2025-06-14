@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics;
+using System.Runtime;
 using Refresh.Database.Models.Activity;
 using Refresh.Database.Models.Notifications;
 using Refresh.Database.Models.Users;
@@ -24,6 +25,10 @@ Console.WriteLine("Preparing migration...");
 ProgressReporter.TestDatabases(config);
 
 Console.WriteLine("Both databases connected successfully!");
+
+if(!GCSettings.IsServerGC)
+    ProgressReporter.Warn("The migrator isn't running with Server GC enabled! This will probably make things a lot slower.");
+
 Console.WriteLine("Setting up migration runner");
 
 MigrationRunner runner = new(config);
@@ -65,6 +70,10 @@ runner.AddMigrator<SkillRewardMigrator>();
 runner.AddBackfiller<UserRootPlaylistBackfiller>();
 
 ProgressReporter.Wall("Beginning migration of data! Do not interrupt this process.");
+
+// force maximum throughput profile
+GCSettings.LargeObjectHeapCompactionMode = GCLargeObjectHeapCompactionMode.Default;
+GCSettings.LatencyMode = GCLatencyMode.Batch;
 
 runner.StartAllTasks();
 ProgressReporter.ReportProgress(runner);

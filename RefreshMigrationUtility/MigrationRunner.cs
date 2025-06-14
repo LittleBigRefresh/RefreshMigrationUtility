@@ -47,8 +47,13 @@ public class MigrationRunner
             }
             
             // remove from queue if complete
-            if(task.Complete)
+            if (task.Complete)
+            {
+                // we just completed a task, relieve some GC pressure
+                GC.Collect(GC.MaxGeneration, GCCollectionMode.Aggressive, true);
                 continue;
+            }
+            
 
             MigrationChunk chunk = task.GetChunk(realm);
             _taskQueue.Enqueue(task); // allow other threads to pick up more chunks
@@ -60,6 +65,9 @@ public class MigrationRunner
                 transaction.Commit();
             }
             Interlocked.Decrement(ref task.ThreadsAccessing);
+            
+            // relieve a small amount of pressure since we completed a chunk
+            GC.Collect(1, GCCollectionMode.Forced, false);
 
             // Debug.Assert(!ef.ChangeTracker.HasChanges());
         }
