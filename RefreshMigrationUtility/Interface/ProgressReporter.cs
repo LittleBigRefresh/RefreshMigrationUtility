@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 using Microsoft.EntityFrameworkCore;
 using Refresh.Database;
 using Refresh.Database.Models.Levels;
@@ -45,20 +46,54 @@ public static class ProgressReporter
     public static void TestDatabases(MigrationConfig config)
     {
         Console.WriteLine("Connecting to Realm...");
-        using RealmDatabaseContext realm = new(config.RealmFilePath);
-        Console.WriteLine("\tTesting Realm...");
-        _ = realm.All<RealmGameLevel>().Count();
+        try
+        {
+            using RealmDatabaseContext realm = new(config.RealmFilePath);
+            Console.WriteLine("\tTesting Realm...");
+            _ = realm.All<RealmGameLevel>().Count();
+        }
+        catch (Exception e)
+        {
+            ReportDbTestError(e, "Realm");
+        }
         Console.WriteLine("Realm OK");
         
         Console.WriteLine("Connecting to Postgres...");
-        using GameDatabaseContext postgres = new(config.PostgresConnectionString);
-        Console.WriteLine("\tWiping database...");
-        postgres.Database.EnsureDeleted();
-        Console.WriteLine("\tMigrating database...");
-        postgres.Database.Migrate();
-        Console.WriteLine("\tTesting Postgres...");
-        _ = postgres.Set<GameLevel>().Count();
+        try
+        {
+            using GameDatabaseContext postgres = new(config.PostgresConnectionString);
+            Console.WriteLine("\tWiping database...");
+            postgres.Database.EnsureDeleted();
+            Console.WriteLine("\tMigrating database...");
+            postgres.Database.Migrate();
+            Console.WriteLine("\tTesting Postgres...");
+            _ = postgres.Set<GameLevel>().Count();
+        }
+        catch (Exception e)
+        {
+            ReportDbTestError(e, "Postgres");
+        }
+
         Console.WriteLine("Postgres OK");
+    }
+
+    [DoesNotReturn]
+    private static void ReportDbTestError(Exception e, string dbName)
+    {
+        Console.ForegroundColor = ConsoleColor.Red;
+        Console.WriteLine($"Could not connect to {dbName}! Migration cannot continue.");
+        Console.WriteLine();
+        Console.WriteLine("This is likely for one of the following reasons:");
+        Console.WriteLine("  1. The path or connection string is wrong");
+        Console.WriteLine("  2. Refresh was not upgraded to the latest version of v2 to complete all migrations");
+        Console.WriteLine("  3. The migrator is bugged");
+        Console.WriteLine();
+        Console.WriteLine("The exception details are printed below for debugging.");
+        Console.WriteLine();
+        Console.ResetColor();
+        Console.WriteLine(e);
+
+        Environment.Exit(2);
     }
 
     public static void ReportProgress(MigrationRunner runner)
