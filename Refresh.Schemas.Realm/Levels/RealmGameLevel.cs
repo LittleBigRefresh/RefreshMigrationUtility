@@ -90,42 +90,6 @@ public partial class RealmGameLevel : IRealmObject
     /// <seealso cref="CoolLevelsWorker"/>
     public float Score { get; set; }
 
-#nullable disable
-    // ILists can't be serialized to XML, and Lists/Arrays cannot be stored in realm,
-    // hence _SkillRewards and SkillRewards both existing
-    // ReSharper disable once InconsistentNaming
-    public IList<RealmGameSkillReward> _SkillRewards { get; }
-    
-    public IList<RealmGameReview> Reviews { get; }
-    
-#nullable restore
-    
-    [XmlArray("customRewards")]
-    [XmlArrayItem("customReward")]
-    public RealmGameSkillReward[] SkillRewards
-    {
-        get => this._SkillRewards.ToArray();
-        set
-        {
-            this._SkillRewards.Clear();
-            value = value.OrderBy(r=>r.Id).ToArray();
-            
-            // There should never be more than 3 skill rewards
-            for (int i = 0; i < Math.Min(value.Length, 3); i++)
-            {
-                RealmGameSkillReward reward = value[i];
-                reward.Id = i;
-                this._SkillRewards.Add(reward);
-            }
-        }
-    }
-    
-    public int SequentialId
-    {
-        get => this.LevelId;
-        set => this.LevelId = value;
-    }
-
     public RealmGameUser? Publisher { get; set; }
     /// <summary>
     /// The publisher who originally published the level, if it has been re-uploaded by someone else.

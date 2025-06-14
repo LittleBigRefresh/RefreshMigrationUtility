@@ -26,8 +26,6 @@ public partial class GameAsset
     
     // ReSharper disable once InconsistentNaming
     public int _AssetSerializationMethod { get; set; }
-    
-    public IList<string> Dependencies { get; } = null!;
 
     [NotMapped] 
     public AssetFlags AssetFlags

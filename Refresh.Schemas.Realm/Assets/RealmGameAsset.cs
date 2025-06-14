@@ -27,8 +27,6 @@ public partial class RealmGameAsset : IRealmObject
     
     // ReSharper disable once InconsistentNaming
     public int _AssetSerializationMethod { get; set; }
-    
-    public IList<string> Dependencies { get; } = null!;
 
     [Ignored] 
     public AssetFlags AssetFlags

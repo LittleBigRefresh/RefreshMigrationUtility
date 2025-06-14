@@ -81,7 +81,7 @@ public class RealmDatabaseContext : IDisposable
         typeof(RealmGameChallengeScore),
     ];
 
-    public const int LatestRealmSchemaVersion = 169; 
+    public const int LatestRealmSchemaVersion = 171; 
 
     public RealmDatabaseContext(string path)
     {

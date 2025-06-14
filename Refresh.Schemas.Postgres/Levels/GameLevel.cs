@@ -88,19 +88,6 @@ public partial class GameLevel
     /// <seealso cref="CoolLevelsWorker"/>
     public float Score { get; set; }
 
-#nullable disable
-    
-    public IList<GameReview> Reviews { get; }
-    
-#nullable restore
-    
-    // TODO: Port GameSkillRewards to not use IEmbeddedObject
-    public GameSkillReward[] SkillRewards
-    {
-        get => [];
-        set => _ = value;
-    }
-
     public GameUser? Publisher { get; set; }
     /// <summary>
     /// The publisher who originally published the level, if it has been re-uploaded by someone else.

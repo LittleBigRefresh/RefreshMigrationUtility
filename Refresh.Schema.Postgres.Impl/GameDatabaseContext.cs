@@ -61,6 +61,7 @@ public partial class GameDatabaseContext : DbContext
     public DbSet<GameChallengeScore> GameChallengeScores { get; set; }
     public DbSet<PinProgressRelation> PinProgressRelations { get; set; }
     public DbSet<ProfilePinRelation> ProfilePinRelations { get; set; }
+    public DbSet<GameSkillReward> GameSkillRewards { get; set; }
 
     private readonly string _connectionString;
 
