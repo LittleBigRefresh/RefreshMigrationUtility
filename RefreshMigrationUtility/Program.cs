@@ -45,7 +45,8 @@ runner.AddMigrator<ProfileCommentMigrator>();
 runner.AddMigrator<ReviewMigrator>();
 runner.AddMigrator<VerifiedIpMigrator>();
 runner.AddMigrator<ScoreMigrator>();
-//
+runner.AddMigrator<PhotoMigrator>();
+
 runner.AddMigrator<FavouriteLevelMigrator>();
 runner.AddMigrator<FavouritePlaylistMigrator>();
 runner.AddMigrator<FavouriteUserMigrator>();
@@ -59,7 +60,7 @@ runner.AddMigrator<RateReviewMigrator>();
 runner.AddMigrator<SubPlaylistMigrator>();
 runner.AddMigrator<TagMigrator>();
 runner.AddMigrator<UniquePlayLevelMigrator>();
-//
+
 runner.AddBackfiller<UserRootPlaylistBackfiller>();
 
 ProgressReporter.Wall("Beginning migration of data! Do not interrupt this process.");

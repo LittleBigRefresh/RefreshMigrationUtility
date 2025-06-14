@@ -14,7 +14,7 @@ public class PhotoMigrator : Migrator<RealmGamePhoto, GamePhoto>
 
     protected override GamePhoto Map(GameDatabaseContext ef, RealmGamePhoto old)
     {
-        return new GamePhoto()
+        return new GamePhoto
         {
             Publisher = ef.GameUsers.Find(old.Publisher.UserId),
             LevelId = old.LevelId,
