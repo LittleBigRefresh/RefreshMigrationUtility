@@ -5,6 +5,7 @@
 namespace Refresh.Database.Models.Levels;
 
 [XmlType("customReward")]
+[PrimaryKey(nameof(LevelId), nameof(Id))]
 public partial class GameSkillReward
 {
     [XmlAttribute(AttributeName = "id")] public int Id { get; set; }

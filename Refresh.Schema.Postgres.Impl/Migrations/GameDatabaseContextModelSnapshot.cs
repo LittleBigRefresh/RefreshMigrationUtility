@@ -485,17 +485,14 @@ namespace Refresh.Database.Migrations
 
             modelBuilder.Entity("Refresh.Database.Models.Levels.GameSkillReward", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
+                    b.Property<int>("LevelId")
                         .HasColumnType("integer");
 
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+                    b.Property<int>("Id")
+                        .HasColumnType("integer");
 
                     b.Property<bool>("Enabled")
                         .HasColumnType("boolean");
-
-                    b.Property<int>("LevelId")
-                        .HasColumnType("integer");
 
                     b.Property<float>("RequiredAmount")
                         .HasColumnType("real");
@@ -506,9 +503,7 @@ namespace Refresh.Database.Migrations
                     b.Property<int>("_ConditionType")
                         .HasColumnType("integer");
 
-                    b.HasKey("Id");
-
-                    b.HasIndex("LevelId");
+                    b.HasKey("LevelId", "Id");
 
                     b.ToTable("GameSkillRewards");
                 });
