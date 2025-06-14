@@ -44,6 +44,12 @@ public static class ProgressReporter
 
     public static void TestDatabases(MigrationConfig config)
     {
+        Console.WriteLine("Connecting to Realm...");
+        using RealmDatabaseContext realm = new(config.RealmFilePath);
+        Console.WriteLine("\tTesting Realm...");
+        _ = realm.All<RealmGameLevel>().Count();
+        Console.WriteLine("Realm OK");
+        
         Console.WriteLine("Connecting to Postgres...");
         using GameDatabaseContext postgres = new(config.PostgresConnectionString);
         Console.WriteLine("\tWiping database...");
@@ -53,12 +59,6 @@ public static class ProgressReporter
         Console.WriteLine("\tTesting Postgres...");
         _ = postgres.Set<GameLevel>().Count();
         Console.WriteLine("Postgres OK");
-
-        Console.WriteLine("Connecting to Realm...");
-        using RealmDatabaseContext realm = new(config.RealmFilePath);
-        Console.WriteLine("\tTesting Realm...");
-        _ = realm.All<RealmGameLevel>().Count();
-        Console.WriteLine("Realm OK");
     }
 
     public static void ReportProgress(MigrationRunner runner)
