@@ -41,9 +41,7 @@ catch (Exception e)
     throw new UnreachableException();
 }
 
-#if !DEBUG
 ProgressReporter.PromptForMigrationConsent(config);
-#endif
 
 Console.WriteLine();
 Console.WriteLine("Preparing migration...");

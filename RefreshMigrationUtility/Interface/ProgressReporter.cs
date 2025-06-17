@@ -13,19 +13,41 @@ public static class ProgressReporter
     public static void PromptForMigrationConsent(MigrationConfig config)
     {
         Console.ForegroundColor = ConsoleColor.Red;
+        
         Console.WriteLine("You are about to wipe the configured Postgres database.");
         Console.WriteLine("If there is any data, IT WILL BE LOST.");
         Console.WriteLine("Your Realm will remain untouched.");
         Console.WriteLine();
         Console.WriteLine($"\tYour connection string is: '{config.PostgresConnectionString}'");
         Console.WriteLine();
-        Console.Write("IF YOU ARE SURE YOU WANT TO DESTROY THE ABOVE POSTGRES DATABASE, PRESS ENTER: ");
-        Console.ResetColor();
 
-        if (Console.ReadKey(true).Key != ConsoleKey.Enter)
+        if (!config.SkipConsentThisWillDestroyAllData)
         {
-            Console.WriteLine("User didn't press enter, bailing");
-            Environment.Exit(1);
+            Console.Write("IF YOU ARE SURE YOU WANT TO DESTROY THE ABOVE POSTGRES DATABASE, PRESS ENTER: ");
+            Console.ResetColor();
+
+            if (Console.ReadKey(true).Key != ConsoleKey.Enter)
+            {
+                Console.WriteLine("User didn't press enter, bailing");
+                Environment.Exit(1);
+            }
+        }
+        else
+        {
+            Console.WriteLine("THE ABOVE POSTGRES DATABASE WILL BE WIPED IN 10 SECONDS IF YOU DO NOT PRESS CTRL+C.");
+            Console.WriteLine("THE DATABASE WILL BE DESTROYED IN...");
+            for (int i = 10; i > 0; i--)
+            {
+                Console.Write($"{i} ");
+                #if !DEBUG
+                Thread.Sleep(1000);
+                #endif
+            }
+            
+            Console.ResetColor();
+            
+            Console.WriteLine();
+            Console.WriteLine("Wiping!");
         }
     }
 
