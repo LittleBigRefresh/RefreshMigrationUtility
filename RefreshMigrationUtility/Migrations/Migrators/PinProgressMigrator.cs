@@ -15,13 +15,14 @@ public class PinProgressMigrator : UserDependentMigrator<RealmPinProgressRelatio
         return old.Realm!.All<RealmPinProgressRelation>()
             .Where(r => r.PinId == old.PinId)
             .Where(r => r.Publisher == old.Publisher)
+            .Where(r => r.IsBeta == old.IsBeta)
             .AsEnumerable()
             .Max(r => r.LastUpdated) == old.LastUpdated;
     }
 
     protected override PinProgressRelation Map(GameDatabaseContext ef, RealmPinProgressRelation old)
     {
-        return new PinProgressRelation()
+        return new PinProgressRelation
         {
             PublisherId = old.Publisher.UserId,
             FirstPublished = old.FirstPublished,
