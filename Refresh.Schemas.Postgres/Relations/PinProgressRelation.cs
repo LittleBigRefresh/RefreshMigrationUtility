@@ -5,7 +5,7 @@ namespace Refresh.Database.Models.Relations;
 
 #nullable disable
 
-[PrimaryKey(nameof(PinId), nameof(PublisherId))]
+[PrimaryKey(nameof(PinId), nameof(PublisherId), nameof(IsBeta))]
 public partial class PinProgressRelation
 {
     /// <summary>
