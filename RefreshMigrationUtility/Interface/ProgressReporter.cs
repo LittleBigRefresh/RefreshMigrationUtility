@@ -64,7 +64,7 @@ public static class ProgressReporter
         }
         catch (Exception e)
         {
-            ReportDbTestError(e, "Realm");
+            ReportDbTestError(e, "Realm", config.RealmFilePath);
         }
         Console.WriteLine("Realm OK");
         
@@ -81,26 +81,34 @@ public static class ProgressReporter
         }
         catch (Exception e)
         {
-            ReportDbTestError(e, "Postgres");
+            ReportDbTestError(e, "Postgres", config.PostgresConnectionString);
         }
 
         Console.WriteLine("Postgres OK");
     }
 
     [DoesNotReturn]
-    private static void ReportDbTestError(Exception e, string dbName)
+    private static void ReportDbTestError(Exception e, string dbName, string relevantConfigValue)
     {
         Console.ForegroundColor = ConsoleColor.Red;
         Console.WriteLine($"Could not connect to {dbName}! Migration cannot continue.");
+        Console.WriteLine($"Tried to find {dbName} by config value: {relevantConfigValue}");
         Console.WriteLine();
         Console.WriteLine("This is likely for one of the following reasons:");
         Console.WriteLine("  1. The path or connection string is wrong");
         Console.WriteLine("  2. Refresh was not upgraded to the latest version of v2 to complete all migrations");
         Console.WriteLine("  3. The migrator is bugged");
         Console.WriteLine();
+        PrintExceptionDetails(e);
+    }
+
+    [DoesNotReturn]
+    public static void PrintExceptionDetails(Exception e)
+    {
         Console.WriteLine("The exception details are printed below for debugging.");
-        Console.WriteLine();
         Console.ResetColor();
+
+        Console.WriteLine();
         Console.WriteLine(e);
 
         Environment.Exit(2);
