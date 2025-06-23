@@ -5,7 +5,7 @@ using RefreshMigrationUtility.Migrations.Dependent;
 
 namespace RefreshMigrationUtility.Migrations.Migrators;
 
-public class ProfileCommentMigrator : UserDependentMigrator<RealmGameProfileComment, GameProfileComment>
+public class ProfileCommentMigrator : UserDependentMigrator<RealmGameProfileComment, GameProfileComment>, INeedsSequenceRecalculation
 {
     public ProfileCommentMigrator(RealmDatabaseContext realm, GameDatabaseContext ef) : base(realm, ef)
     {}
@@ -21,4 +21,6 @@ public class ProfileCommentMigrator : UserDependentMigrator<RealmGameProfileComm
             Content = old.Content,
         };
     }
+    
+    public string SequenceName => "GameProfileComments_SequentialId_seq";
 }

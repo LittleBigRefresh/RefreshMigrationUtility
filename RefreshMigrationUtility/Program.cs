@@ -102,4 +102,8 @@ GCSettings.LatencyMode = GCLatencyMode.Batch;
 runner.StartAllTasks();
 ProgressReporter.ReportProgress(runner);
 
+ProgressReporter.Wall("Data has been copied over, recalculating sequences");
+
+runner.RecalculateSequences();
+
 ProgressReporter.Wall("Migration has successfully completed!");

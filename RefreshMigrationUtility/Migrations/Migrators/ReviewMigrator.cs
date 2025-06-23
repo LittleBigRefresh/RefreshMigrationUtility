@@ -5,7 +5,7 @@ using RefreshMigrationUtility.Migrations.Dependent;
 
 namespace RefreshMigrationUtility.Migrations.Migrators;
 
-public class ReviewMigrator : UserAndLevelDependentMigrator<RealmGameReview, GameReview>
+public class ReviewMigrator : UserAndLevelDependentMigrator<RealmGameReview, GameReview>, INeedsSequenceRecalculation
 {
     public ReviewMigrator(RealmDatabaseContext realm, GameDatabaseContext ef) : base(realm, ef)
     {}
@@ -23,4 +23,6 @@ public class ReviewMigrator : UserAndLevelDependentMigrator<RealmGameReview, Gam
             ReviewId = old.ReviewId
         };
     }
+
+    public string SequenceName => "GameReviews_ReviewId_seq";
 }

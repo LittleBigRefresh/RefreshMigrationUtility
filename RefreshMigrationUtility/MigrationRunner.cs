@@ -1,5 +1,6 @@
 ﻿using System.Collections.Concurrent;
 using System.Diagnostics;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage;
 using Realms;
 using Refresh.Database;
@@ -134,5 +135,29 @@ public class MigrationRunner
                 otherTask.ProvidesType == neededType
             )
         );
+    }
+
+#pragma warning disable EF1002 // warning for sql injection. all strings are results of things at compile-time so its fine
+    public void RecalculateSequences()
+    {
+        using GameDatabaseContext ef = new(this._config.PostgresConnectionString);
+        
+        foreach (MigrationTask task in this._tasks)
+        {
+            if (task is not INeedsSequenceRecalculation seq)
+                continue;
+
+            string[] split = seq.SequenceName.Split('_');
+
+            string table = split[0];
+            string key = split[1];
+
+            int highestId = ef.Database.SqlQueryRaw<int>($"SELECT MAX(\"{key}\") as \"Value\" FROM \"{table}\"").First();
+
+            ef.Database.ExecuteSqlRaw($"ALTER SEQUENCE \"{seq.SequenceName}\" RESTART WITH {highestId};");
+            
+            Console.WriteLine($"Set {seq.SequenceName} to {highestId}");
+        }
+#pragma warning restore EF1002
     }
 }

@@ -5,7 +5,7 @@ using RefreshMigrationUtility.Migrations.Dependent;
 
 namespace RefreshMigrationUtility.Migrations.Migrators;
 
-public class PlaylistMigrator : UserDependentMigrator<RealmGamePlaylist, GamePlaylist>
+public class PlaylistMigrator : UserDependentMigrator<RealmGamePlaylist, GamePlaylist>, INeedsSequenceRecalculation
 {
     public PlaylistMigrator(RealmDatabaseContext realm, GameDatabaseContext ef) : base(realm, ef)
     {}
@@ -27,4 +27,6 @@ public class PlaylistMigrator : UserDependentMigrator<RealmGamePlaylist, GamePla
             PublisherId = old.Publisher.UserId
         };
     }
+
+    public string SequenceName => "GamePlaylists_PlaylistId_seq";
 }

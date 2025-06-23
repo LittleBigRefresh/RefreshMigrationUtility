@@ -5,7 +5,7 @@ using RefreshMigrationUtility.Migrations.Dependent;
 
 namespace RefreshMigrationUtility.Migrations.Migrators;
 
-public class ChallengeMigrator : UserAndLevelDependentMigrator<RealmGameChallenge, GameChallenge>
+public class ChallengeMigrator : UserAndLevelDependentMigrator<RealmGameChallenge, GameChallenge>, INeedsSequenceRecalculation
 {
     public ChallengeMigrator(RealmDatabaseContext realm, GameDatabaseContext ef) : base(realm, ef)
     {}
@@ -28,4 +28,6 @@ public class ChallengeMigrator : UserAndLevelDependentMigrator<RealmGameChalleng
             Type = old.Type
         };
     }
+
+    public string SequenceName => "GameChallenges_ChallengeId_seq";
 }

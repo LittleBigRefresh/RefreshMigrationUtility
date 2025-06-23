@@ -7,7 +7,7 @@ using Refresh.Schema.Realm.Impl;
 
 namespace RefreshMigrationUtility.Migrations.Migrators;
 
-public class PhotoMigrator : Migrator<RealmGamePhoto, GamePhoto>
+public class PhotoMigrator : Migrator<RealmGamePhoto, GamePhoto>, INeedsSequenceRecalculation
 {
     public PhotoMigrator(RealmDatabaseContext realm, GameDatabaseContext ef) : base(realm, ef)
     {}
@@ -48,4 +48,5 @@ public class PhotoMigrator : Migrator<RealmGamePhoto, GamePhoto>
     }
 
     public override IEnumerable<Type> NeedsTypes { get; } = [typeof(GameUser), typeof(GameAsset), typeof(GameLevel)];
+    public string SequenceName => "GamePhotos_PhotoId_seq";
 }

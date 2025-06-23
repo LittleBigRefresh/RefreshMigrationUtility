@@ -4,7 +4,7 @@ using Refresh.Schema.Realm.Impl;
 
 namespace RefreshMigrationUtility.Migrations.Migrators;
 
-public class RequestStatisticsMigrator : Migrator<RealmRequestStatistics, RequestStatistics>
+public class RequestStatisticsMigrator : Migrator<RealmRequestStatistics, RequestStatistics>, INeedsSequenceRecalculation
 {
     public RequestStatisticsMigrator(RealmDatabaseContext realm, GameDatabaseContext ef) : base(realm, ef)
     {}
@@ -18,4 +18,6 @@ public class RequestStatisticsMigrator : Migrator<RealmRequestStatistics, Reques
             TotalRequests = old.TotalRequests,
         };
     }
+
+    public string SequenceName => "RequestStatistics_Id_seq";
 }

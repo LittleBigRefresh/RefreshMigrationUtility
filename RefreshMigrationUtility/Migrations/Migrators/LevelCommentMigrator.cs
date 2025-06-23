@@ -5,7 +5,7 @@ using RefreshMigrationUtility.Migrations.Dependent;
 
 namespace RefreshMigrationUtility.Migrations.Migrators;
 
-public class LevelCommentMigrator : UserAndLevelDependentMigrator<RealmGameLevelComment, GameLevelComment>
+public class LevelCommentMigrator : UserAndLevelDependentMigrator<RealmGameLevelComment, GameLevelComment>, INeedsSequenceRecalculation
 {
     public LevelCommentMigrator(RealmDatabaseContext realm, GameDatabaseContext ef) : base(realm, ef)
     {}
@@ -26,4 +26,6 @@ public class LevelCommentMigrator : UserAndLevelDependentMigrator<RealmGameLevel
             Content = old.Content,
         };
     }
+
+    public string SequenceName => "GameLevelComments_SequentialId_seq";
 }

@@ -5,7 +5,7 @@ using RefreshMigrationUtility.Migrations.Dependent;
 
 namespace RefreshMigrationUtility.Migrations.Migrators;
 
-public class LevelMigrator : UserDependentMigrator<RealmGameLevel, GameLevel>
+public class LevelMigrator : UserDependentMigrator<RealmGameLevel, GameLevel>, INeedsSequenceRecalculation
 {
     public LevelMigrator(RealmDatabaseContext realm, GameDatabaseContext ef) : base(realm, ef)
     {}
@@ -48,4 +48,6 @@ public class LevelMigrator : UserDependentMigrator<RealmGameLevel, GameLevel>
             UpdateDate = old.UpdateDate
         };
     }
+    
+    public string SequenceName => "GameLevels_LevelId_seq";
 }
