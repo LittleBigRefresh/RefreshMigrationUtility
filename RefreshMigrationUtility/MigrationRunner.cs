@@ -153,6 +153,7 @@ public class MigrationRunner
             string key = split[1];
 
             int highestId = ef.Database.SqlQueryRaw<int>($"SELECT MAX(\"{key}\") as \"Value\" FROM \"{table}\"").First();
+            highestId++;
 
             ef.Database.ExecuteSqlRaw($"ALTER SEQUENCE \"{seq.SequenceName}\" RESTART WITH {highestId};");
             
